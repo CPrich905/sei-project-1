@@ -3,6 +3,8 @@ const squares = []
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
 let alienIndex = 0 // starts alien in top LHS
 
+
+//PLAYER MOVEMENT
 function movePlayer () {
   console.log(`the player should now move to position ${playerIndex}`)
   squares.forEach(square => square.classList.remove('player'))
@@ -29,11 +31,10 @@ function handleKeyDown(e) {
   if (playerShouldMove) movePlayer()
 }
 
+// GRID INITIALISATION: for loop to fill grid with squares
 
 function init() {
   const grid = document.querySelector('.grid')
-  console.log('grid')
-  //for loop to fill grid with squares
   for (let i = 0; i < width*width; i++) {
     const square = document.createElement('div')
     square.classList.add('grid-item')
@@ -45,25 +46,68 @@ function init() {
 
   squares[playerIndex].classList.add('player')
   squares[alienIndex].classList.add('alien')
-
   window.addEventListener('keydown', handleKeyDown)
   document.getElementById('startBtn').addEventListener('click', alienMove)
 
-  // setInterval(alienMove, 1000)
+  // ALIEN MOVEMENT
+
   // const stop = clearInterval(alienMove)
   //
+
+  setInterval(alienMove, 1000)
+
   function alienMove() {
     let alienShouldMove = true
     console.log('alien should move')
-    setTimeout(alienShouldMove, 6000)
-    if (alienIndex % width < width-1) {
-      alienIndex++
-    } else if (alienIndex % width > 0) {
-      alienIndex--
-    } else {
-      alienShouldMove = false
+    alienMoveLR()
+
+    function alienMoveLR() {
+      if (alienIndex % width < width-1) {
+        console.log(alienIndex)
+        alienIndex++
+        squares.forEach(square => square.classList.remove('alien'))
+        squares[alienIndex].classList.add('alien')
+      } else if (alienIndex % width === width-1) {
+        console.log('alien at RHS')
+        alienIndex += width
+        squares.forEach(square => square.classList.remove('alien'))
+        squares[alienIndex].classList.add('alien')
+        alienMoveRL()
+      }
     }
-    if (alienShouldMove) alienMove()
+    function alienMoveRL() {
+      if (alienIndex % width > 0) {
+        console.log(alienIndex)
+        alienIndex--
+        squares.forEach(square => square.classList.remove('alien'))
+        squares[alienIndex].classList.add('alien')
+      } else if (alienIndex % width === 0) {
+        console.log('alien at LHS')
+        alienIndex += width
+        squares.forEach(square => square.classList.remove('alien'))
+        squares[alienIndex].classList.add('alien')
+        alienMoveLR()
+      }
+    }
+
+
+
+  //
+  //   if (alienIndex % width < width-1) {
+  //     alienIndex++
+  //   } else if (alienIndex % width === width-1) {
+  //     alienShouldMove = false
+  //   }
+  //   else if (alienIndex % width > 0) {
+  //     alienIndex--
+  //   }
+  //   else if (alienIndex % width === 0) {
+  //     alienShouldMove = false
+  //   }
+  //   else {
+  //     alienShouldMove = false
+  //   }
+  //   if (alienShouldMove) alienMove()
   }
 
 }
