@@ -4,7 +4,22 @@ let playerIndex = Math.floor(width * width - width) // will put player to bottom
 let alienIndex = 0 // starts alien in top LHS
 let alienCount = 0 // counts movement
 let movingRight = true
+class Alien {
+  constructor(startingIndex, alienMovement, alienHit) {
+    this.rank = []
+    this.startingIndex = []
+    this.alienMovement = true
+    //this.alienHit = false
+    //this.alienShoot = false
+  }
+}
 
+const alienOne = new Alien(1, 0, false)
+const alienTwo = new Alien(2, 1, false)
+const alienThree = new Alien(3, 2, false)
+const alienFour = new Alien(4, 3, false)
+const alienFive = new Alien(5, 4, false)
+const alienSix = new Alien(6, 5, false)
 
 //PLAYER MOVEMENT
 function movePlayer () {
@@ -43,12 +58,12 @@ function init() {
     squares.push(square)
     square.innerHTML = i
     grid.append(square)
-
   }
 
   squares[playerIndex].classList.add('player')
   squares[alienIndex].classList.add('alien')
   window.addEventListener('keydown', handleKeyDown)
+
 
   // ALIEN MOVEMENT
 
@@ -56,12 +71,11 @@ function init() {
     squares.forEach(square => square.classList.remove('alien'))
     squares[alienIndex].classList.add('alien')
   }
-  // const startBtn = document.querySelector('#startBtn').addEventListener('click', enemyTimer)
-  // const stopBtn = document.querySelector('#stopBtn').addEventListener('click', timeout)
 
-  const enemyTimer = setInterval(alienMove, 500)
+
+  const enemyMovementTimer = setInterval(alienMove, 500)
   setTimeout(()=> {
-    clearInterval(enemyTimer)
+    clearInterval(enemyMovementTimer)
   }, 20000)
 
 
@@ -84,9 +98,10 @@ function init() {
     } else if (alienCount === 0) {
       alienIndex += width
       movingRight = true
+    } else if (alienCount === 89) {
+      alienIndex = 89
+      alienCount = 0
     }
-
-
 
     squares.forEach(square => square.classList.remove('alien'))
     squares[alienIndex].classList.add('alien')
