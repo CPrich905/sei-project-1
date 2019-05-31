@@ -2,6 +2,8 @@ const width = 10
 const squares = []
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
 let alienIndex = 0 // starts alien in top LHS
+let alienCount = 0 //
+let movingRight = true
 
 
 //PLAYER MOVEMENT
@@ -51,65 +53,49 @@ function init() {
 
   // ALIEN MOVEMENT
 
-  // const stop = clearInterval(alienMove)
-  //
-
   setInterval(alienMove, 1000)
-
   function alienMove() {
     let alienShouldMove = true
-    console.log('alien should move')
-    alienMoveLR()
+    if (alienCount < 9) {
+      alienShouldMove = true
+    } else if (alienCount >= 10) {
+      alienShouldMove = false
+    }
 
-    function alienMoveLR() {
-      if (alienIndex % width < width-1) {
-        console.log(alienIndex)
+    // if the count is less than 9 move to the right
+    if (alienCount < 9) {
+      if(movingRight) {
         alienIndex++
-        squares.forEach(square => square.classList.remove('alien'))
-        squares[alienIndex].classList.add('alien')
-      } else if (alienIndex % width === width-1) {
-        console.log('alien at RHS')
-        alienIndex += width
-        squares.forEach(square => square.classList.remove('alien'))
-        squares[alienIndex].classList.add('alien')
-        alienMoveRL()
-      }
-    }
-    function alienMoveRL() {
-      if (alienIndex % width > 0) {
-        console.log(alienIndex)
+      } else {
         alienIndex--
-        squares.forEach(square => square.classList.remove('alien'))
-        squares[alienIndex].classList.add('alien')
-      } else if (alienIndex % width === 0) {
-        console.log('alien at LHS')
-        alienIndex += width
-        squares.forEach(square => square.classList.remove('alien'))
-        squares[alienIndex].classList.add('alien')
-        alienMoveLR()
       }
+      // alienIndex ++
+      // alienCount ++
+      // squares.forEach(square => square.classList.remove('alien'))
+      // squares[alienIndex].classList.add('alien')
+      // console.log(`alien moving right count is ${alienCount}`)
+    } else if (alienCount === 9) {
+      console.log('drop it like its hot')
+      alienIndex += width
+      alienCount = 0
+      movingRight = !movingRight
+      console.log(`alien is dropping one row count is ${alienCount}`)
+    } else if (!alienShouldMove) {
+      console.log('ahhh')
+      alienIndex --
+      alienCount --
+      squares.forEach(square => square.classList.remove('alien'))
+      squares[alienIndex].classList.add('alien')
+      console.log(`alien moving left count is ${alienCount}`)
     }
+    // when the count reaches 9, drop one row and start moving left
 
+    // when the count reaches 0, drop one row and start moving right
 
-
-  //
-  //   if (alienIndex % width < width-1) {
-  //     alienIndex++
-  //   } else if (alienIndex % width === width-1) {
-  //     alienShouldMove = false
-  //   }
-  //   else if (alienIndex % width > 0) {
-  //     alienIndex--
-  //   }
-  //   else if (alienIndex % width === 0) {
-  //     alienShouldMove = false
-  //   }
-  //   else {
-  //     alienShouldMove = false
-  //   }
-  //   if (alienShouldMove) alienMove()
   }
 
 }
+
+
 
 window.addEventListener('DOMContentLoaded', init)
