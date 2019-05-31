@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  background-color: lightblue;
 }
 
 html, body {
@@ -15,14 +16,24 @@ body {
 }
 
 div.grid {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   display: flex;
   flex-wrap: wrap;
 }
 
 div.grid-item {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   border: 1px dashed black;
+}
+div.grid-item.player {
+  background-image: url('../images/pika-sprite.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: green;
+}
+
+div.grid-item.alien {
+  background-color: red;
 }
