@@ -1,6 +1,7 @@
 const width = 10
 const squares = []
 let alienIndex = 0
+let moving = false
 let movingRight = true
 let alienCount = 0 // counts movement
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
@@ -8,10 +9,10 @@ let playerIndex = Math.floor(width * width - width) // will put player to bottom
 //ALIEN CONSTRUCTION
 
 class Alien {
-  constructor(rank, startingIndex, alienMovement, alienHit, alienShoot) {
+  constructor(rank, startingIndex, alienMove, alienHit, alienShoot) {
     this.rank = rank
     this.startingIndex = startingIndex
-    this.alienMovement = alienMovement
+    this.alienMove = alienMove
     this.alienHit = alienHit
     this.alienShoot = alienShoot
   }
@@ -20,12 +21,10 @@ class Alien {
 let startingIndex = ('alienIndex'+'rank')
 let rank = null
 
-const alienOne = new Alien(0, 0, false, false, false)
-const alienTwo = new Alien(2, 1, false, false, false)
-const alienThree = new Alien(3, 2, false, false, false)
-// const alienFour = new Alien(4, 3, false, false, false)
-// const alienFive = new Alien(5, 4, false, false, false)
-// const alienSix = new Alien(6, 5, false, false, false)
+const alienOne = new Alien(0, 0, true, false, false)
+const alienTwo = new Alien(2, 1, true, false, false)
+const alienThree = new Alien(3, 2, true, false, false)
+
 
 //PLAYER MOVEMENT
 
@@ -41,21 +40,12 @@ function init() {
     grid.append(square)
   }
 
-  const start = document.querySelector('#startBtn')
-  start.addEventListener('click', moveEnemy)
-  const ranks = document.querySelector('#ranksBtn')
-  ranks.addEventListener('click', formRanks)
-  const pause = document.querySelector('#pauseBtn')
-  pause.addEventListener('click', pauseGame)
 
-  // div[i].onclick = function(idx) {
-  //   this.classList.remove("active");
-  //   if(idx < div.length - 1) div[idx + 1].classList.add("active");
-  // }.bind(div[i], i);
+
   function pauseGame() {
     console.log('pause button')
-    let playerIndex = Math.floor(width * width - width)
-    let alienIndex = 0
+    // let playerIndex = Math.floor(width * width - width)
+    // let alienIndex = 0
   }
 
   function formRanks() {
@@ -72,14 +62,17 @@ function init() {
 
   // ADD PLAYER & ENEMIES
   function movePlayer () {
-    console.log(`the player should now move to position ${playerIndex}`)
     squares.forEach(square => square.classList.remove('player'))
-    squares[playerIndex].classList.add('player', 'lastplayer')
+    squares[playerIndex].classList.add('player')
+  }
+
+  function fireMissile () {
+    console.log('Fire!')
+    squares.forEach(square => square.classList.add('missile'))
   }
 
   function handleKeyDown(e) {
     let playerShouldMove = true
-    console.log(e.keyCode)
     switch(e.keyCode) {
       case 39:
         if (playerIndex % width < width-1) {
@@ -91,14 +84,26 @@ function init() {
           playerIndex--
         }
         break
+      case 32:
+        fireMissile()
+        break
       default:
         playerShouldMove = false
     }
     if (playerShouldMove) movePlayer()
   }
 
-
+  // div[i].onclick = function(idx) {
+  //   this.classList.remove("active");
+  //   if(idx < div.length - 1) div[idx + 1].classList.add("active");
+  // }.bind(div[i], i);
   // ALIEN MOVEMENT
+  const ranks = document.querySelector('#ranksBtn')
+  const start = document.querySelector('#startBtn')
+  const pause = document.querySelector('#pauseBtn')
+  ranks.addEventListener('click', formRanks)
+  start.addEventListener('click', alienMove)
+  pause.addEventListener('click', pauseGame)
 
   function moveEnemy() {
     squares.forEach(square => square.classList.remove('alienOne', 'alienTwo', 'alienThree'))
@@ -112,12 +117,15 @@ function init() {
     clearInterval(enemyMovementTimer)
   }, 5000)
 
+
+
   function alienMove() {
+
     if (movingRight) {
       alienIndex ++
       moveEnemy()
       alienCount ++
-      console.log(`alien id is ${rank} moving right`)
+      console.log(`alien rank ${this.rank} moving right`)
     } else if (!movingRight) {
       alienIndex --
       moveEnemy()
@@ -136,8 +144,8 @@ function init() {
       alienCount = 0
     }
   }
-}
 
+}
 
 
 window.addEventListener('DOMContentLoaded', init)
