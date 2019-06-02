@@ -92,6 +92,7 @@ function init() {
         missileShouldFire = false
     }
     if (playerShouldMove) movePlayer()
+    if (missileShouldFire) fireMissile()
   }
 
   function movePlayer () {
@@ -103,32 +104,27 @@ function init() {
   // MISSILE MOVEMENT & TIMER
   function fireMissile () {
     moveMissile()
-    const missileTimer = setInterval(moveMissile, 5000)
+    const missileTimer = setInterval(moveMissile, 500)
     setTimeout(()=> {
       clearInterval(missileTimer)
-    }, 6000)
+    }, 1500)
   }
 
 
   function moveMissile() {
-    let missileIndex = playerIndex
+    let missileIndex = (playerIndex -= width)
     console.log(missileIndex)
     squares[missileIndex].classList.add('missile')
     // missileIndex += width
-    // // squares.forEach(square => square.classList.remove('missile'))
-    // squares[missileIndex].classList.add('missile')
+    // squares.forEach(square => square.classList.remove('missile'))
   }
 
-  // div[i].onclick = function(idx) {
-  //   this.classList.remove("active");
-  //   if(idx < div.length - 1) div[idx + 1].classList.add("active");
-  // }.bind(div[i], i);
 
 
   // ALIEN MOVEMENT & TIMER
   function moveEnemy() {
     squares.forEach(square => square.classList.remove('alienOne'))
-    squares[0].classList.add('alienOne')
+    squares[alienIndex].classList.add('alienOne')
     squares.forEach(square => square.classList.remove('alienTwo'))
     squares[1].classList.add('alienTwo')
     squares.forEach(square => square.classList.remove('alienThree'))
@@ -141,12 +137,14 @@ function init() {
       clearInterval(enemyMovementTimer)
     }, 5000)
     const enemyMovementTimer = setInterval(alienMove, 500)
-
+    console.log('aliens should move')
     if (movingRight) {
+      console.log('aliens should move right')
       alienIndex ++
       moveEnemy()
       alienCount ++
     } else if (!movingRight) {
+      console.log('aliens should move left')
       alienIndex --
       moveEnemy()
       alienCount --
