@@ -1,10 +1,11 @@
 const width = 10
 const squares = []
 let alienIndex = 0
-let moving = false
+// let moving = false
 let movingRight = true
 let alienCount = 0 // counts movement
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
+
 
 //ALIEN CONSTRUCTION
 
@@ -18,19 +19,17 @@ class Alien {
   }
 }
 
-let startingIndex = ('alienIndex'+'rank')
-let rank = null
-
+// let startingIndex = ('alienIndex'+'rank')
+// let rank = null
 const alienOne = new Alien(0, 0, true, false, false)
 const alienTwo = new Alien(2, 1, true, false, false)
 const alienThree = new Alien(3, 2, true, false, false)
 
 
-//PLAYER MOVEMENT
 
-// GRID INITIALISATION: for loop to fill grid with squares
 
 function init() {
+  // GRID INITIALISATION: for loop to fill grid with squares
   const grid = document.querySelector('.grid')
   for (let i = 0; i < width*width; i++) {
     const square = document.createElement('div')
@@ -40,39 +39,39 @@ function init() {
     grid.append(square)
   }
 
+  // PAUSE BUTTON - doesn't fucking work!
+  // function pauseGame() {
+  //   console.log('pause button')
+  //   // let playerIndex = Math.floor(width * width - width)
+  //   // let alienIndex = 0
+  // }
 
-
-  function pauseGame() {
-    console.log('pause button')
-    // let playerIndex = Math.floor(width * width - width)
-    // let alienIndex = 0
-  }
-
+  // ALIEN BUILD
   function formRanks() {
     console.log('form Ranks')
     squares[0].classList.add('alienOne')
     squares[1].classList.add('alienTwo')
     squares[2].classList.add('alienThree')
-    // squares.forEach(square => square.classList.remove('alienOne'))
-    // squares[startingIndex].classList.add('alienOne')
   }
 
-  window.addEventListener('keydown', handleKeyDown)
   squares[playerIndex].classList.add('player')
+  squares[alienIndex].classList.add('alienOne')
+  const ranks = document.querySelector('#ranksBtn')
+  const start = document.querySelector('#startBtn')
+  // const pause = document.querySelector('#pauseBtn')
 
-  // ADD PLAYER & ENEMIES
-  function movePlayer () {
-    squares.forEach(square => square.classList.remove('player'))
-    squares[playerIndex].classList.add('player')
-  }
 
-  function fireMissile () {
-    console.log('Fire!')
-    squares.forEach(square => square.classList.add('missile'))
-  }
+  // EVENT LISTENERS
+  window.addEventListener('keydown', handleKeyDown)
+  ranks.addEventListener('click', formRanks)
+  start.addEventListener('click', alienMove)
+  // pause.addEventListener('click', pauseGame)
+
+  //PLAYER MOVEMENT
 
   function handleKeyDown(e) {
     let playerShouldMove = true
+    let missileShouldFire = false
     switch(e.keyCode) {
       case 39:
         if (playerIndex % width < width-1) {
@@ -85,52 +84,72 @@ function init() {
         }
         break
       case 32:
+        missileShouldFire = true
         fireMissile()
         break
       default:
         playerShouldMove = false
+        missileShouldFire = false
     }
     if (playerShouldMove) movePlayer()
+  }
+
+  function movePlayer () {
+    squares.forEach(square => square.classList.remove('player'))
+    squares[playerIndex].classList.add('player')
+  }
+
+
+  // MISSILE MOVEMENT & TIMER
+  function fireMissile () {
+    moveMissile()
+    const missileTimer = setInterval(moveMissile, 5000)
+    setTimeout(()=> {
+      clearInterval(missileTimer)
+    }, 6000)
+  }
+
+
+  function moveMissile() {
+    let missileIndex = playerIndex
+    console.log(missileIndex)
+    squares[missileIndex].classList.add('missile')
+    // missileIndex += width
+    // // squares.forEach(square => square.classList.remove('missile'))
+    // squares[missileIndex].classList.add('missile')
   }
 
   // div[i].onclick = function(idx) {
   //   this.classList.remove("active");
   //   if(idx < div.length - 1) div[idx + 1].classList.add("active");
   // }.bind(div[i], i);
-  // ALIEN MOVEMENT
-  const ranks = document.querySelector('#ranksBtn')
-  const start = document.querySelector('#startBtn')
-  const pause = document.querySelector('#pauseBtn')
-  ranks.addEventListener('click', formRanks)
-  start.addEventListener('click', alienMove)
-  pause.addEventListener('click', pauseGame)
 
+
+  // ALIEN MOVEMENT & TIMER
   function moveEnemy() {
-    squares.forEach(square => square.classList.remove('alienOne', 'alienTwo', 'alienThree'))
-    // squares.forEach(square => square.classList.add('alienOne'))
-    squares[alienIndex].classList.add('alienOne', 'alienTwo', 'alienThree')
+    squares.forEach(square => square.classList.remove('alienOne'))
+    squares[0].classList.add('alienOne')
+    squares.forEach(square => square.classList.remove('alienTwo'))
+    squares[1].classList.add('alienTwo')
+    squares.forEach(square => square.classList.remove('alienThree'))
+    squares[2].classList.add('alienThree')
   }
 
 
-  const enemyMovementTimer = setInterval(alienMove, 500)
-  setTimeout(()=> {
-    clearInterval(enemyMovementTimer)
-  }, 5000)
-
-
-
   function alienMove() {
+    setTimeout(()=> {
+      clearInterval(enemyMovementTimer)
+    }, 5000)
+    const enemyMovementTimer = setInterval(alienMove, 500)
 
     if (movingRight) {
       alienIndex ++
       moveEnemy()
       alienCount ++
-      console.log(`alien rank ${this.rank} moving right`)
     } else if (!movingRight) {
       alienIndex --
       moveEnemy()
       alienCount --
-      console.log('moving left')
     }
 
     if (alienCount === 9) {
