@@ -28,12 +28,27 @@ div.grid-item {
   border: 1px dashed black;
 }
 div.grid-item.player {
-  background-image: url('../images/pika-sprite.png');
+  background-image: url('../images/baseshipa.ico');
   background-repeat: no-repeat;
   background-size: contain;
   background-color: green;
 }
 
-div.grid-item.alien {
+div.grid-item.alienOne {
   background-color: red;
+  background-image: url('../images/saucer1a.ico');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+div.grid-item.alienTwo {
+  background-color: blue;
+  background-image: url('../images/saucer1a.ico');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+div.grid-item.alienThree {
+  background-color: pink;
+  background-image: url('../images/saucer1a.ico');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
