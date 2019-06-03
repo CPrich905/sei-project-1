@@ -18,6 +18,31 @@ class Alien {
     this.alienShoot = alienShoot
   }
 }
+function handleKeyDown(e) {
+  let playerShouldMove = true
+  let missileShouldFire = false
+  switch(e.keyCode) {
+    case 39:
+    if (playerIndex % width < width-1) {
+      playerIndex++
+    }
+    break
+    case 37:
+    if (playerIndex % width > 0) {
+      playerIndex--
+    }
+    break
+    case 32:
+    missileShouldFire = true
+    fireMissile()
+    break
+    default:
+    playerShouldMove = false
+    missileShouldFire = false
+  }
+  if (playerShouldMove) movePlayer()
+  if (missileShouldFire) fireMissile()
+}
 
 // let startingIndex = ('alienIndex'+'rank')
 // let rank = null
@@ -64,36 +89,11 @@ function init() {
   // EVENT LISTENERS
   window.addEventListener('keydown', handleKeyDown)
   ranks.addEventListener('click', formRanks)
-  start.addEventListener('click', alienMove)
+  start.addEventListener('click', play)
   // pause.addEventListener('click', pauseGame)
 
   //PLAYER MOVEMENT
 
-  function handleKeyDown(e) {
-    let playerShouldMove = true
-    let missileShouldFire = false
-    switch(e.keyCode) {
-      case 39:
-        if (playerIndex % width < width-1) {
-          playerIndex++
-        }
-        break
-      case 37:
-        if (playerIndex % width > 0) {
-          playerIndex--
-        }
-        break
-      case 32:
-        missileShouldFire = true
-        fireMissile()
-        break
-      default:
-        playerShouldMove = false
-        missileShouldFire = false
-    }
-    if (playerShouldMove) movePlayer()
-    if (missileShouldFire) fireMissile()
-  }
 
   function movePlayer () {
     squares.forEach(square => square.classList.remove('player'))
@@ -125,18 +125,19 @@ function init() {
   function moveEnemy() {
     squares.forEach(square => square.classList.remove('alienOne'))
     squares[alienIndex].classList.add('alienOne')
-    squares.forEach(square => square.classList.remove('alienTwo'))
-    squares[1].classList.add('alienTwo')
-    squares.forEach(square => square.classList.remove('alienThree'))
-    squares[2].classList.add('alienThree')
+    // squares.forEach(square => square.classList.remove('alienTwo'))
+    // squares[1].classList.add('alienTwo')
+    // squares.forEach(square => square.classList.remove('alienThree'))
+    // squares[2].classList.add('alienThree')
   }
-
-
-  function alienMove() {
+  function play() {
+    const enemyMovementTimer = setInterval(alienMove, 500)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 5000)
-    const enemyMovementTimer = setInterval(alienMove, 500)
+    }, 7000)
+  }
+
+  function alienMove() {
     console.log('aliens should move')
     if (movingRight) {
       console.log('aliens should move right')
@@ -151,10 +152,10 @@ function init() {
     }
 
     if (alienCount === 9) {
-      alienIndex += width
+      alienIndex += width+1
       movingRight = false
     } else if (alienCount === 0) {
-      alienIndex += width
+      alienIndex += width+1
       movingRight = true
     } else if (alienCount === 89) {
       alienIndex = 89
