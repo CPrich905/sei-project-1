@@ -71,11 +71,11 @@ function fireMissile () {
 
 
 function moveMissile() {
-  let missilePosition = (playerIndex -= width)
+  let missilePosition = (playerIndex - width)
   console.log(missilePosition)
-  squares[this.missilePosition].classList.remove('missile')
-  this.missilePosition-=width
-  squares[this.missilePosition].classList.add('missile')
+  squares[missilePosition].classList.remove('missile')
+  missilePosition-=width
+  squares[missilePosition].classList.add('missile')
   // squares[this.position].classList.remove('alien')
   // this.position++
   // squares[this.position].classList.add('alien')
