@@ -28,24 +28,22 @@ class Alien {
 }
 
 function handleKeyDown(e) {
-  console.log('hello')
   let playerShouldMove = true
   let missileShouldFire = false
   switch(e.keyCode) {
     case 39:
-      if (playerIndex % width > 0 ) {
-        playerIndex--
+      if (playerIndex % width < width-1) {
+        playerIndex++
       }
       break
     case 37:
-      if (playerIndex % width < width-1) {
-        playerIndex++
+      if (playerIndex % width > 0) {
+        playerIndex--
       }
       break
     case 32:
       missileShouldFire = true
       missilePosition = playerIndex - width
-      // fireMissile()
       break
     default:
       playerShouldMove = false
@@ -62,10 +60,8 @@ function movePlayer () {
   squares[playerIndex].classList.add('player')
 }
 
-
 // MISSILE MOVEMENT & TIMER
 function fireMissile () {
-  // moveMissile()
   squares[missilePosition].classList.add('missile')
   const missileTimer = setInterval(moveMissile, 1000)
   setTimeout(()=> {
