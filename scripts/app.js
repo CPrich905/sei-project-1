@@ -31,6 +31,20 @@ class Alien {
     }
     squares[this.position].classList.add('alien')
   }
+  dropLine() {
+    squares[this.position].classList.remove('alien')
+    console.log('drop line right function')
+    this.position += width
+    movingRight = !movingRight
+    squares[this.position].classList.add('alien')
+  }
+  // dropLineLeft() {
+  //   squares[this.position].classList.remove('alien')
+  //   console.log('drop line left function')
+  //   this.position += width+1
+  //   movingRight = !movingRight
+  //   squares[this.position].classList.add('alien')
+  // }
 }
 
 function handleKeyDown(e) {
@@ -83,7 +97,7 @@ function moveMissile() {
 
 function init() {
   // GRID INITIALISATION: for loop to fill grid with squares
-  // GRID - 8 LINES (need to change move & )
+  // GRID - 8 LINES
   const grid = document.querySelector('.grid')
   for (let i = 0; i < width*width; i++) {
     const square = document.createElement('div')
@@ -158,20 +172,22 @@ function init() {
       alienCount --
     }
 
-    if (alienCount === 4) {
+    if (alienCount === 5) {
       aliens.forEach(alien => {
-        // alien.moveEnemy()
-        alien.position += width
-        movingRight = !movingRight
-        console.log(`this alien is at ${alien.position}`)
+        alien.dropLine()
+        // alien.position += width+1
+        // movingRight = !movingRight
       })
-    } else if (alienCount === 0) {
+    } else if (alienCount === -1) {
       aliens.forEach(alien => {
-        // alien.moveEnemy()
-        alien.position += width
-        movingRight = !movingRight
+        alien.dropLine()
+        // alien.position += width-1
+        // movingRight = !movingRight
       })
     }
+
+
+
     //   // alienIndex += width
     //   // alienIndex.moveCounter += width
     //   alien.position += width
