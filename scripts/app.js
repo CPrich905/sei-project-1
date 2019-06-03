@@ -2,7 +2,7 @@ const width = 10
 // const rows = [] // only needed if using row format
 const squares = []
 const aliens = []
-let alienIndex = 0
+// let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
@@ -142,10 +142,10 @@ function init() {
   // ALIEN MOVEMENT & TIMER
 
   function play() {
-    const enemyMovementTimer = setInterval(alienMove, 700)
+    const enemyMovementTimer = setInterval(alienMove, 800)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 10000)
+    }, 20000)
   }
   // PAUSE BUTTON - doesn't fucking work!
   function pauseGame(enemyMovementTimer) {
