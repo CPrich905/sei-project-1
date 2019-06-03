@@ -1,10 +1,10 @@
 const width = 10
-const rows = []
+// const rows = [] // only needed if using row format
 const squares = []
 const aliens = []
 let alienIndex = 0
 let movingRight = true
-let alienCount = 0 // counts movement
+let alienCount = 0 // counts movement across grid width
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
 let missilePosition = null
 
@@ -12,17 +12,23 @@ let missilePosition = null
 //ALIEN CONSTRUCTION
 
 class Alien {
-  constructor(rank, startingIndex, position, moveCounter, alienHit, alienShoot) {
+  constructor(rank, startingIndex, position, alienHit, alienShoot, alienCount) {
     this.rank = rank
     this.startingIndex = startingIndex
-    this.position = startingIndex+moveCounter
-    this.moveCounter = 0
+    this.position = startingIndex
     this.alienhit = alienHit
     this.alienShoot = alienShoot
+    this.alienCount = alienCount
   }
   moveEnemy() {
     squares[this.position].classList.remove('alien')
-    this.position++
+    if (movingRight) {
+      this.position ++
+      this.alienCount ++
+    } else {
+      this.position --
+      this.alienCount --
+    }
     squares[this.position].classList.add('alien')
   }
 }
@@ -112,9 +118,10 @@ function init() {
   // }
 
 
-  aliens.push(new Alien(0, 0, true, false, false))
-  aliens.push(new Alien(2, 1, true, false, false))
-  aliens.push(new Alien(3, 2, true, false, false))
+  aliens.push(new Alien(0, 0, true, false, false, 0))
+  aliens.push(new Alien(1, 2, true, false, false, 0))
+  aliens.push(new Alien(2, 4, true, false, false, 0))
+  console.log('array', aliens)
 
 
   squares[playerIndex].classList.add('player')
@@ -133,32 +140,48 @@ function init() {
       clearInterval(enemyMovementTimer)
     }, 10000)
   }
-
+  // Counts across grid & drops a line at the end of each row
   function alienMove() {
-    console.log('aliens should move')
     if (movingRight) {
-      console.log('aliens should move right')
-      alienIndex ++
-      aliens[0].moveEnemy()
+      console.log('move right')
+      aliens.forEach(alien => {
+        alien.moveEnemy()
+        console.log('count is', alienCount)
+      })
       alienCount ++
-    }
-    else if (!movingRight) {
-      console.log('aliens should move left')
-      alienIndex --
-      aliens[0].moveEnemy()
+    } else if (!movingRight) {
+      console.log('moving left')
+      aliens.forEach(alien => {
+        alien.moveEnemy()
+        console.log('count is', alienCount)
+      })
       alienCount --
     }
 
-    if (alienCount === 9) {
-      alienIndex += width+1
-      movingRight = false
+    if (alienCount === 4) {
+      aliens.forEach(alien => {
+        // alien.moveEnemy()
+        alien.position += width
+        movingRight = !movingRight
+        console.log(`this alien is at ${alien.position}`)
+      })
     } else if (alienCount === 0) {
-      alienIndex += width+1
-      movingRight = true
-    } else if (alienCount === 89) {
-      alienIndex = 89
-      alienCount = 0
+      aliens.forEach(alien => {
+        // alien.moveEnemy()
+        alien.position += width
+        movingRight = !movingRight
+      })
     }
+    //   // alienIndex += width
+    //   // alienIndex.moveCounter += width
+    //   alien.position += width
+    //   movingRight = true
+    //   console.log('drop line left')
+    // } else if (alienCount === 89) {
+    //   alien.position = 89
+    //   alienCount = 0
+    // }
+
   }
 
 }
