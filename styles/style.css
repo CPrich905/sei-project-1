@@ -23,7 +23,15 @@ div.grid {
   width: 500px;
   height: 500px;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+}
+div.grid-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+div.grid-row {
+  display: flex;
+  flex-direction: row;
 }
 
 div.grid-item {
@@ -38,13 +46,13 @@ div.grid-item.player {
   background-color: green;
 }
 
-div.grid-item.alienOne {
+div.grid-item.alien {
   background-color: purple;
   background-image: url('../images/saucer1a.ico');
   background-repeat: no-repeat;
   background-size: contain;
 }
-div.grid-item.alienTwo {
+/* div.grid-item.alienTwo {
   background-color: blue;
   background-image: url('../images/saucer1a.ico');
   background-repeat: no-repeat;
@@ -55,7 +63,7 @@ div.grid-item.alienThree {
   background-image: url('../images/saucer1a.ico');
   background-repeat: no-repeat;
   background-size: contain;
-}
+} */
 
 div.grid-item.missile {
   background-image: url('../images/missile.png');
