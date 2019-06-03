@@ -5,7 +5,8 @@ const aliens = []
 let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement
-let playerIndex = Math.floor(width * width - 1) // will put player to bottom LHS of grid
+let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
+let missilePosition = null
 
 
 //ALIEN CONSTRUCTION
@@ -27,6 +28,7 @@ class Alien {
 }
 
 function handleKeyDown(e) {
+  console.log('hello')
   let playerShouldMove = true
   let missileShouldFire = false
   switch(e.keyCode) {
@@ -42,7 +44,8 @@ function handleKeyDown(e) {
       break
     case 32:
       missileShouldFire = true
-      fireMissile()
+      missilePosition = playerIndex - width
+      // fireMissile()
       break
     default:
       playerShouldMove = false
@@ -62,45 +65,48 @@ function movePlayer () {
 
 // MISSILE MOVEMENT & TIMER
 function fireMissile () {
-  moveMissile()
-  const missileTimer = setInterval(moveMissile, 500)
+  // moveMissile()
+  squares[missilePosition].classList.add('missile')
+  const missileTimer = setInterval(moveMissile, 1000)
   setTimeout(()=> {
     clearInterval(missileTimer)
-  }, 1500)
+  }, 3000)
 }
 
-
 function moveMissile() {
-  let missilePosition = (playerIndex - width)
-  console.log(missilePosition)
   squares[missilePosition].classList.remove('missile')
-  missilePosition-=width
+  missilePosition -= width
   squares[missilePosition].classList.add('missile')
-  // squares[this.position].classList.remove('alien')
-  // this.position++
-  // squares[this.position].classList.add('alien')
 }
 
 function init() {
   // GRID INITIALISATION: for loop to fill grid with squares
+  // GRID - 8 LINES (need to change move & )
   const grid = document.querySelector('.grid')
-  for (let i = 0; i < width; i++) {
-    const row = document.createElement('div')
-    row.classList.add('grid-row')
-    rows.push(row)
-    // row.innerHTML = i
-    grid.append(row)
+  for (let i = 0; i < width*width; i++) {
+    const square = document.createElement('div')
+    square.classList.add('grid-item')
+    squares.push(square)
+    square.innerHTML = i
+    grid.append(square)
   }
-  //GRID in ROW
-  rows.forEach((row, index) => {
-    for (let i = 0; i < width; i++) {
-      const square = document.createElement('div')
-      square.classList.add('grid-item')
-      squares.push(square)
-      square.innerHTML = index*width+i
-      row.append(square)
-    }
-  })
+  // GRID/ROW COMBINATION - 16 LINES
+  // for (let i = 0; i < width; i++) {
+  //   const row = document.createElement('div')
+  //   row.classList.add('grid-row')
+  //   rows.push(row)
+  //   grid.append(row)
+  // }
+  // //GRID in ROW
+  // rows.forEach((row, index) => {
+  //   for (let i = 0; i < width; i++) {
+  //     const square = document.createElement('div')
+  //     square.classList.add('grid-item')
+  //     squares.push(square)
+  //     square.innerHTML = index*width+i
+  //     row.append(square)
+  //   }
+  // })
 
   // PAUSE BUTTON - doesn't fucking work!
   // function pauseGame() {
@@ -110,39 +116,26 @@ function init() {
   // }
 
 
-  // ALIEN BUILD - pushing 3 to array
-  // function formRanks () {
-  //   console.log('form ranks')
   aliens.push(new Alien(0, 0, true, false, false))
   aliens.push(new Alien(2, 1, true, false, false))
   aliens.push(new Alien(3, 2, true, false, false))
 
-  // }
-
 
   squares[playerIndex].classList.add('player')
-  // const ranks = document.querySelector('#ranksBtn')
   const start = document.querySelector('#startBtn')
-  // const pause = document.querySelector('#pauseBtn')
 
 
   // EVENT LISTENERS
   window.addEventListener('keydown', handleKeyDown)
-  // ranks.addEventListener('click', formRanks)
   start.addEventListener('click', play)
-  // pause.addEventListener('click', pauseGame)
-
-
 
   // ALIEN MOVEMENT & TIMER
-
-
 
   function play() {
     const enemyMovementTimer = setInterval(alienMove, 500)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 7000)
+    }, 10000)
   }
 
   function alienMove() {
@@ -153,23 +146,23 @@ function init() {
       aliens[0].moveEnemy()
       alienCount ++
     }
-    // else if (!movingRight) {
-    //   console.log('aliens should move left')
-    //   alienIndex --
-    //   moveEnemy()
-    //   alienCount --
-    // }
+    else if (!movingRight) {
+      console.log('aliens should move left')
+      alienIndex --
+      aliens[0].moveEnemy()
+      alienCount --
+    }
 
-    // if (alienCount === 9) {
-    //   alienIndex += width+1
-    //   movingRight = false
-    // } else if (alienCount === 0) {
-    //   alienIndex += width+1
-    //   movingRight = true
-    // } else if (alienCount === 89) {
-    //   alienIndex = 89
-    //   alienCount = 0
-    // }
+    if (alienCount === 9) {
+      alienIndex += width+1
+      movingRight = false
+    } else if (alienCount === 0) {
+      alienIndex += width+1
+      movingRight = true
+    } else if (alienCount === 89) {
+      alienIndex = 89
+      alienCount = 0
+    }
   }
 
 }
