@@ -33,18 +33,10 @@ class Alien {
   }
   dropLine() {
     squares[this.position].classList.remove('alien')
-    console.log('drop line right function')
     this.position += width
     movingRight = !movingRight
     squares[this.position].classList.add('alien')
   }
-  // dropLineLeft() {
-  //   squares[this.position].classList.remove('alien')
-  //   console.log('drop line left function')
-  //   this.position += width+1
-  //   movingRight = !movingRight
-  //   squares[this.position].classList.add('alien')
-  // }
 }
 
 function handleKeyDown(e) {
@@ -86,13 +78,21 @@ function fireMissile () {
   const missileTimer = setInterval(moveMissile, 1000)
   setTimeout(()=> {
     clearInterval(missileTimer)
-  }, 3000)
+  }, 8500)
 }
 
 function moveMissile() {
   squares[missilePosition].classList.remove('missile')
   missilePosition -= width
   squares[missilePosition].classList.add('missile')
+  if (squares[missilePosition].classList.contains('alien')) {
+    console.log('hit')
+    hit()
+  }
+}
+
+function hit() {
+  squares[missilePosition].classList.remove('missile', 'alien')
 }
 
 function init() {
@@ -124,27 +124,20 @@ function init() {
   //   }
   // })
 
-  // PAUSE BUTTON - doesn't fucking work!
-  // function pauseGame() {
-  //   console.log('pause button')
-  //   // let playerIndex = Math.floor(width * width - width)
-  //   // let alienIndex = 0
-  // }
 
 
   aliens.push(new Alien(0, 0, true, false, false, 0))
   aliens.push(new Alien(1, 2, true, false, false, 0))
   aliens.push(new Alien(2, 4, true, false, false, 0))
-  console.log('array', aliens)
 
 
   squares[playerIndex].classList.add('player')
   const start = document.querySelector('#startBtn')
-
-
+  const pause = document.querySelector('#pauseBtn')
   // EVENT LISTENERS
   window.addEventListener('keydown', handleKeyDown)
   start.addEventListener('click', play)
+  pause.addEventListener('click', pauseGame)
 
   // ALIEN MOVEMENT & TIMER
 
@@ -154,20 +147,27 @@ function init() {
       clearInterval(enemyMovementTimer)
     }, 10000)
   }
-  // Counts across grid & drops a line at the end of each row
+  // PAUSE BUTTON - doesn't fucking work!
+  function pauseGame(enemyMovementTimer) {
+    console.log('pause button')
+    setTimeout(() => {
+      clearInterval(enemyMovementTimer)
+    })
+  }
+
   function alienMove() {
     if (movingRight) {
-      console.log('move right')
+      // console.log('move right')
       aliens.forEach(alien => {
         alien.moveEnemy()
-        console.log('count is', alienCount)
+        // console.log('count is', alienCount)
       })
       alienCount ++
     } else if (!movingRight) {
-      console.log('moving left')
+      // console.log('moving left')
       aliens.forEach(alien => {
         alien.moveEnemy()
-        console.log('count is', alienCount)
+        // console.log('count is', alienCount)
       })
       alienCount --
     }
@@ -178,25 +178,13 @@ function init() {
         // alien.position += width+1
         // movingRight = !movingRight
       })
-    } else if (alienCount === -1) {
+    } else if (alienCount === 0) {
       aliens.forEach(alien => {
         alien.dropLine()
         // alien.position += width-1
         // movingRight = !movingRight
       })
     }
-
-
-
-    //   // alienIndex += width
-    //   // alienIndex.moveCounter += width
-    //   alien.position += width
-    //   movingRight = true
-    //   console.log('drop line left')
-    // } else if (alienCount === 89) {
-    //   alien.position = 89
-    //   alienCount = 0
-    // }
 
   }
 
