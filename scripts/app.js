@@ -27,16 +27,6 @@ class Player {
     squares.forEach(square => square.classList.remove('player'))
     squares[this.playerIndex].classList.add('player')
   }
-  //FIRE MISSILE
-  // fireMissile () {
-  //   squares[missilePosition].classList.add('missile')
-  //   const missileTimer = setInterval(moveMissile, 400)
-  //   //clear missile if top row or bottom row - may need to go in alienhit function
-  //   setTimeout(()=> {
-  //     clearInterval(missileTimer)
-  //   }, 3400)
-  // }
-
   //confirms player is hit - reduces life counter by 1
   playerHit() {
     this.lives -= 1
@@ -45,31 +35,21 @@ class Player {
   }
 }
 
-//MISSILE CONSTRUCTION
+//MISSILE CONSTRUCTION - nice to have: put an ammo counter on this & limit number of fires
 class Missile {
   constructor(missileIndex, shouldTrack) {
     this.missileIndex = missileIndex
     this.shouldTrack = shouldTrack
     this.fireMissile()
   }
-
   fireMissile () {
-    // console.log(`missile should launch from position ${this.missileIndex}`)
     squares[this.missileIndex].classList.add('missile')
     this.moveMissile()
     this.missileTimer = setInterval( () => this.moveMissile(), 600)
-    // //clear missile if top row or bottom row - may need to go in alienhit function
-    // setTimeout(()=> {
-    //   clearInterval(this.missileTimer)
-    // }, 3400)
   }
   moveMissile() {
-    // let launchPad = this.missileIndex
-    console.log(`missile should move from ${this.missileIndex}`)
     squares[this.missileIndex].classList.remove('missile')
     this.missileIndex-= width
-    console.log(`the new position of the missile is ${this.missileIndex}`)
-
     if (this.missileIndex < 0) {
       clearInterval(this.missileTimer)
     } else {
@@ -77,16 +57,8 @@ class Missile {
     }
   }
 }
-// function moveMissile() {
-//   squares[missilePosition].classList.remove('missile')
-//   missilePosition -= width
-//   squares[missilePosition].classList.add('missile')
-//   if (squares[missilePosition].classList.contains('alien')) {
-//     checkHit()
-//   }
-// }
 
-//ALIEN CONSTRUCTION
+//ALIEN CONSTRUCTION -----------------------------------------------------------
 
 class Alien {
   constructor(rank, startingIndex, position, alienhit, alienShouldFire, alienCount) {
@@ -119,37 +91,48 @@ class Alien {
     squares[this.position].id = this.rank
   }
 }
-// ALIEN SHOOT --------------------------------------------------------------
-// function  alienShoot() inside init.
-// pushes bomb to array Bombs
+// ALIEN SHOOT ----------------------------------------------------------------
 class Bombs {
   constructor(position) {
     this.position = position
-    // this.bombPosition = position
+    this.bombsAway()
   }
   bombsAway() {
-    bombPosition = this.position
-    // console.log('bombs away', bombPosition)
-    squares[bombPosition+width].classList.add('bomb')
-    const bombDropTimer = setInterval(this.bombFall, 400)
-    setTimeout(()=> {
-      clearInterval(bombDropTimer)
-    }, 50000)
+    squares[this.position].classList.add('bomb')
+    this.bombDrops()
+    this.fallTimer = setInterval( () => this.bombDrops(), 800)
   }
-  bombFall() {
-    // console.log(`bombFall at ${bombPosition}`)
-    squares[bombPosition].classList.remove('bomb')
-    bombPosition += width
-    squares[bombPosition].classList.add('bomb')
-    if (squares[bombPosition].classList.contains('player')) {
-      console.log('hit')
-      player.playerHit()
+  bombDrops() {
+    squares[this.position].classList.remove('bomb')
+    this.position += width
+    if (this.position > width*width) {
+      clearInterval(this.fallTimer)
+    } else {
+      squares[this.position].classList.add('bomb')
     }
-    // if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
-    //   console.log('bomb on bottom line')
-    // }
   }
+  //   bombPosition = this.position
+  //   // console.log('bombs away', bombPosition)
+  //   squares[bombPosition+width].classList.add('bomb')
+  //   const bombDropTimer = setInterval(this.bombFall, 400)
+  //   setTimeout(()=> {
+  //     clearInterval(bombDropTimer)
+  //   }, 50000)
+  // }
+  // bombFall() {
+  //   // console.log(`bombFall at ${bombPosition}`)
+  //   squares[bombPosition].classList.remove('bomb')
+  //   bombPosition += width
+  //   squares[bombPosition].classList.add('bomb')
+  //   if (squares[bombPosition].classList.contains('player')) {
+  //     console.log('hit')
+  //     player.playerHit()
+  //   }
+  // if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
+  //   console.log('bomb on bottom line')
+  // }
 }
+
 
 // function confirmKill() {
 //   console.log('you dead')
@@ -250,10 +233,11 @@ function init() {
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
     }, 25000)
-    const enemyShootTimer = setInterval(alienShoot, 600)
+
+    const enemyShootTimer = setInterval(alienShoot, 500)
     setTimeout(() => {
       clearInterval(enemyShootTimer)
-    }, 700)
+    }, 2000)
   }
 
   // PAUSE BUTTON - doesn't fucking work!
@@ -294,18 +278,17 @@ function init() {
       })
     }
   }
+
+  //ALIEN FIRE ALLOCATION ----------------------------------------------------
   function alienShoot() {
     //firingAlien = random from aliens array
-    let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
+    const firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
     console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
 
     // assigns bombPosition as the position of the alien, passes it to bomb array
     bombPosition = firingAlien.position
     // console.log(bombPosition)
     bombs.push(new Bombs(bombPosition))
-    bombs.forEach(bomb => {
-      bomb.bombsAway()
-    })
   }
 
 }
