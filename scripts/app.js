@@ -81,19 +81,23 @@ class Bombs {
   }
 
   bombFall() {
-    console.log(`bombFall at ${bombPosition}`)
+    // console.log(`bombFall at ${bombPosition}`)
     squares[bombPosition].classList.remove('bomb')
     bombPosition += width
     squares[bombPosition].classList.add('bomb')
+    if (squares[bombPosition].classList.contains('player')) {
+      console.log('hit')
+      confirmKill()
+    }
+    if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
+      console.log('bomb on bottom line')
+    }
   }
 }
 
-// squares[bombPosition].classList.remove('missile')
-// bombPosition += width
-// squares[bombPosition].classList.add('missile')
-// if (squares[missilePosition].classList.contains('alien')) {
-//   checkHit()
-// }
+function confirmKill() {
+  console.log('you dead')
+}
 
 function handleKeyDown(e) {
   let playerShouldMove = true
@@ -213,7 +217,10 @@ function init() {
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
     }, 25000)
-    const enemyShootTimer = setInterval(alienShoot, 1600)
+    const enemyShootTimer = setInterval(alienShoot, 600)
+    setTimeout(() => {
+      clearInterval(enemyShootTimer)
+    }, 700)
   }
 
   // PAUSE BUTTON - doesn't fucking work!
@@ -259,16 +266,14 @@ function init() {
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
     console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
 
-    let bombPosition = firingAlien.position
+    // assigns bombPosition as the position of the alien, passes it to bomb array
+    bombPosition = firingAlien.position
     // console.log(bombPosition)
     bombs.push(new Bombs(bombPosition))
-
     bombs.forEach(bomb => {
       bomb.bombsAway()
     })
   }
-
-
 
 }
 
