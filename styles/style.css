@@ -71,3 +71,10 @@ div.grid-item.missile {
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+div.grid-item.bomb {
+  background-image: url('../images/bomb.png');
+  background-color: yellow;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

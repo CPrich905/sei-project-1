@@ -6,6 +6,7 @@ let movingRight = true
 let alienCount = 0 // counts movement across grid width
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
 let missilePosition = null
+let bombPosition = null
 
 
 // PLAYER CONSTRUCTION
@@ -37,7 +38,7 @@ class Alien {
     this.startingIndex = startingIndex
     this.position = startingIndex
     this.alienhit = false
-    this.alienShouldFire = alienShouldFire
+    this.alienShouldFire = false
     this.alienCount = alienCount
   }
   moveEnemy() {
@@ -61,7 +62,9 @@ class Alien {
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
-
+  bombsAway() {
+    console.log('bombs away')
+  }
 }
 
 function handleKeyDown(e) {
@@ -227,6 +230,9 @@ function init() {
     //firingAlien = random from aliens array
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
     console.log(`alien ${firingAlien.rank} should fire from this ${firingAlien.position} position`)
+    
+    firingAlien.bombsAway()
+
     // console.log(`${firingAlien} this alien should fire`)
     // aliens.find(alien => alien.rank)
     //
