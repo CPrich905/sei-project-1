@@ -26,17 +26,13 @@ body {
 }
 
 div.other-screen {
-  width: 40%;
-  height: 100%;
+  flex: 40%;
   background-color: blue;
 }
 
 div.play-screen {
   background-color: grey;
-  width: 550px;
-  align-self: right;
-  justify-content: flex-end;
-  flex-direction: column;
+  flex: 60%;
 }
 
 div.grid {
@@ -77,6 +73,11 @@ div.grid-item.bomb {
   background-color: yellow;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+
+div.flex-container {
+  display: flex;
 }
 
 footer {

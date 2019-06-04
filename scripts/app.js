@@ -125,6 +125,7 @@ class Bombs {
       squares[this.position].classList.add('bomb')
     }
     checkPlayerHit()
+
   }
 }
 
