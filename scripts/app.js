@@ -54,15 +54,37 @@ class Missile {
   }
 
   fireMissile () {
-    console.log(`missile should launch from position ${this.missileIndex}`)
+    // console.log(`missile should launch from position ${this.missileIndex}`)
     squares[this.missileIndex].classList.add('missile')
-    // const missileTimer = setInterval(moveMissile, 400)
+    this.moveMissile()
+    this.missileTimer = setInterval( () => this.moveMissile(), 600)
     // //clear missile if top row or bottom row - may need to go in alienhit function
     // setTimeout(()=> {
-    //   clearInterval(missileTimer)
+    //   clearInterval(this.missileTimer)
     // }, 3400)
   }
+  moveMissile() {
+    // let launchPad = this.missileIndex
+    console.log(`missile should move from ${this.missileIndex}`)
+    squares[this.missileIndex].classList.remove('missile')
+    this.missileIndex-= width
+    console.log(`the new position of the missile is ${this.missileIndex}`)
+
+    if (this.missileIndex < 0) {
+      clearInterval(this.missileTimer)
+    } else {
+      squares[this.missileIndex].classList.add('missile')
+    }
+  }
 }
+// function moveMissile() {
+//   squares[missilePosition].classList.remove('missile')
+//   missilePosition -= width
+//   squares[missilePosition].classList.add('missile')
+//   if (squares[missilePosition].classList.contains('alien')) {
+//     checkHit()
+//   }
+// }
 
 //ALIEN CONSTRUCTION
 
@@ -149,29 +171,24 @@ function handleKeyDown(e) {
       break
     case 83: // fire (s-key)
       missiles.push(new Missile(player.playerIndex - width))
-
-      // missiles.missileShouldFire = true
-      // missiles.missileIndex = player.playerIndex - width
-      // console.log(typeof missileIndex)
-
       break
     default:
       playerShouldMove = false
       missileShouldFire = false
   }
   if (playerShouldMove) player.movePlayer()
-  if (missileShouldFire) console.log('missile fire must push to Missiles')
+  if (missileShouldFire) missile.moveMissile()
 }
 
 //MISSILE MOVEMENT--------------------------------------------------------------
-function moveMissile() {
-  squares[missilePosition].classList.remove('missile')
-  missilePosition -= width
-  squares[missilePosition].classList.add('missile')
-  if (squares[missilePosition].classList.contains('alien')) {
-    checkHit()
-  }
-}
+// function moveMissile() {
+//   squares[missilePosition].classList.remove('missile')
+//   missilePosition -= width
+//   squares[missilePosition].classList.add('missile')
+//   if (squares[missilePosition].classList.contains('alien')) {
+//     checkHit()
+//   }
+// }
 // CHECK HIT ON ALIEN ----------------------------------------------------------
 function checkHit() {
   console.log('hit')
