@@ -161,9 +161,9 @@ function init() {
   }
 
 
-  aliens.push(new Alien(0, 0, true, false, false, 0))
-  aliens.push(new Alien(1, 2, true, false, false, 0))
-  aliens.push(new Alien(2, 4, true, false, false, 0))
+  aliens.push(new Alien(0, 0, null, true, false, false, 0))
+  aliens.push(new Alien(1, 2, null, true, false, false, 0))
+  aliens.push(new Alien(2, 4, null, true, false, false, 0))
   console.log(aliens)
   console.log(aliens.find(alien => alien.rank === 0))
 
@@ -226,7 +226,7 @@ function init() {
   function alienShoot() {
     //firingAlien = random from aliens array
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
-    console.log(`alien ${firingAlien.rank} should fire`)
+    console.log(`alien ${firingAlien.rank} should fire from this ${firingAlien.position} position`)
     // console.log(`${firingAlien} this alien should fire`)
     // aliens.find(alien => alien.rank)
     //
