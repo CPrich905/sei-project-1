@@ -1,35 +1,42 @@
 const width = 10
 const squares = []
+let player = null
 const aliens = []
 const bombs = []
 // let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
-let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
+let playerIndex = [] // will put player to bottom LHS of grid
 let missilePosition = null
 let bombPosition = null
 
 
 // PLAYER CONSTRUCTION
-// class Player {
-//   constructor(startingIndex, shoot, move, lives, hit) {
-//     this.startingIndex = startingIndex
-//     this.shoot = false
-//     this.move = false // change to true on startBtn?
-//     this.lives = 3
-//     this.hit = false
-//   }
-  // movePlayer() {
-  //   //link code from main section
-  // }
-  // playerShoot() {
-  //   //link code from main section
-  //   //ammunition?
-  // }
-  // playerLives() {
-  //   //may be needed for scoreboard
-  // }
-// }
+class Player {
+  constructor(startingIndex, shoot, move, lives, hit) {
+    this.playerIndex = startingIndex
+    this.shoot = false
+    this.move = false // change to true on startBtn?
+    this.lives = 3
+    this.hit = false
+  }
+  movePlayer() {
+    //
+    this.startingIndex = Math.floor(width * width - width)
+    squares.forEach(square => square.classList.remove('player'))
+    squares[this.playerIndex].classList.add('player')
+  }
+  playerShoot() {
+    //link code from main section
+    //ammunition count?
+  }
+  playerLives() {
+    //set innerHTML of life counter on scoreboard
+  }
+  playerHit() {
+    //prompt from confirmKill, should -= lives
+  }
+}
 
 //ALIEN CONSTRUCTION
 
@@ -64,7 +71,9 @@ class Alien {
     squares[this.position].id = this.rank
   }
 }
-
+// ALIEN SHOOT --------------------------------------------------------------
+// function  alienShoot() inside init.
+// pushes bomb to array Bombs
 class Bombs {
   constructor(position) {
     this.position = position
@@ -79,7 +88,6 @@ class Bombs {
       clearInterval(bombDropTimer)
     }, 50000)
   }
-
   bombFall() {
     // console.log(`bombFall at ${bombPosition}`)
     squares[bombPosition].classList.remove('bomb')
@@ -104,34 +112,34 @@ function handleKeyDown(e) {
   let missileShouldFire = false
   switch(e.keyCode) {
     case 39:
-      if (playerIndex % width < width-1) {
-        playerIndex++
+      if (player.playerIndex % width < width-1) {
+        player.playerIndex++
       }
       break
     case 37:
-      if (playerIndex % width > 0) {
-        playerIndex--
+      if (player.playerIndex % width > 0) {
+        player.playerIndex--
       }
       break
     case 83:
       missileShouldFire = true
-      missilePosition = playerIndex - width
+      missilePosition = player.playerIndex - width
       break
     default:
       playerShouldMove = false
       missileShouldFire = false
   }
-  if (playerShouldMove) movePlayer()
+  if (playerShouldMove) player.movePlayer()
   if (missileShouldFire) fireMissile()
 }
 
 
 //PLAYER MOVEMENT---------------------------------------------------------------
 //move to player constructor
-function movePlayer () {
-  squares.forEach(square => square.classList.remove('player'))
-  squares[playerIndex].classList.add('player')
-}
+// function movePlayer () {
+//   squares.forEach(square => square.classList.remove('player'))
+//   squares[playerIndex].classList.add('player')
+// }
 
 // Player MISSILE MOVEMENT & TIMER
 // move to player constructor
@@ -169,12 +177,7 @@ function checkHit() {
 }
 
 
-// ALIEN SHOOT --------------------------------------------------------------
-// function  alienShoot() {
-//  // function to take prompt from alienMove/start button
-//  // take player shoot function & duplicate with missile firing down screen
-//  // push score to scoreboard
-// }
+
 
 // CHECK HIT ON PLAYER --------------------------------------------------------
 // if playerHit
@@ -195,14 +198,15 @@ function init() {
     grid.append(square)
   }
 
-
   aliens.push(new Alien(0, 0, null, true, false, false, 0))
   aliens.push(new Alien(1, 2, null, true, false, false, 0))
   aliens.push(new Alien(2, 4, null, true, false, false, 0))
   // console.log(aliens)
   // console.log(aliens.find(alien => alien.rank === 0))
+  player = new Player(width*width-width, false, true, 3, false)
+  console.log(player)
 
-  squares[playerIndex].classList.add('player')
+
   const start = document.querySelector('#startBtn')
   const pause = document.querySelector('#pauseBtn')
   // EVENT LISTENERS
