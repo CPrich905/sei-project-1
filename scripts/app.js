@@ -65,13 +65,14 @@ class Alien {
   }
 }
 
-class Bomb {
+class Bombs {
   constructor(position) {
     this.position = position
   }
   bombsAway() {
-    console.log('bombs away')
-    // squares[this.position+width].classList.add('bomb')
+    console.log('bombs away', this.position)
+    // console.log(`bombs away position ${this.position}`)
+    squares[this.position+width].classList.add('bomb')
     // const bombDrop = setInterval(bombsAway, 300)
     // console.log(`bomb position is ${bombs.position}`)
   }
@@ -177,8 +178,8 @@ function init() {
   aliens.push(new Alien(0, 0, null, true, false, false, 0))
   aliens.push(new Alien(1, 2, null, true, false, false, 0))
   aliens.push(new Alien(2, 4, null, true, false, false, 0))
-  console.log(aliens)
-  console.log(aliens.find(alien => alien.rank === 0))
+  // console.log(aliens)
+  // console.log(aliens.find(alien => alien.rank === 0))
 
   squares[playerIndex].classList.add('player')
   const start = document.querySelector('#startBtn')
@@ -240,8 +241,13 @@ function init() {
     //firingAlien = random from aliens array
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
     console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
-    bombs.push(new Bomb([this.position+width]))
-    console.log(bombs)
+    // console.log(parseInt(firingAlien.position))
+    // console.log(typeof firingAlien.position)
+
+    let bombPosition = firingAlien.position
+    // console.log(bombPosition)
+    bombs.push(new Bombs(bombPosition))
+
     bombs.forEach(bomb => {
       bomb.bombsAway()
     })
