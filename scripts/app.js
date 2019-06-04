@@ -90,8 +90,16 @@ class Alien {
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
+  // initiate a bomb in here, taking id from random alien (within init)
+  kaboom() {
+    console.log('toms genius idea')
+
+    bombs.push(new Bombs(this.position))
+  }
 }
-// ALIEN SHOOT ----------------------------------------------------------------
+
+
+// BOMB LOGIC ----------------------------------------------------------------
 class Bombs {
   constructor(position) {
     this.position = position
@@ -108,29 +116,10 @@ class Bombs {
     if (this.position > width*width) {
       clearInterval(this.fallTimer)
     } else {
+      console.log('shit')
       squares[this.position].classList.add('bomb')
     }
   }
-  //   bombPosition = this.position
-  //   // console.log('bombs away', bombPosition)
-  //   squares[bombPosition+width].classList.add('bomb')
-  //   const bombDropTimer = setInterval(this.bombFall, 400)
-  //   setTimeout(()=> {
-  //     clearInterval(bombDropTimer)
-  //   }, 50000)
-  // }
-  // bombFall() {
-  //   // console.log(`bombFall at ${bombPosition}`)
-  //   squares[bombPosition].classList.remove('bomb')
-  //   bombPosition += width
-  //   squares[bombPosition].classList.add('bomb')
-  //   if (squares[bombPosition].classList.contains('player')) {
-  //     console.log('hit')
-  //     player.playerHit()
-  //   }
-  // if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
-  //   console.log('bomb on bottom line')
-  // }
 }
 
 
@@ -282,13 +271,15 @@ function init() {
   //ALIEN FIRE ALLOCATION ----------------------------------------------------
   function alienShoot() {
     //firingAlien = random from aliens array
-    const firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
-    console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
+    aliens[Math.floor(Math.random()*aliens.length)].kaboom()
+
+    // console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
+    // tell alien to drop bomb (can then remove code below)
 
     // assigns bombPosition as the position of the alien, passes it to bomb array
-    bombPosition = firingAlien.position
+    // bombPosition = firingAlien.position
     // console.log(bombPosition)
-    bombs.push(new Bombs(bombPosition))
+
   }
 
 }
