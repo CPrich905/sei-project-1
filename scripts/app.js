@@ -11,7 +11,7 @@ let missilePosition = null
 let bombPosition = null
 
 
-// PLAYER CONSTRUCTION
+// PLAYER CONSTRUCTION ---------------------------------------------------------
 class Player {
   constructor(startingIndex, shoot, move, lives, hit) {
     this.playerIndex = startingIndex
@@ -20,20 +20,31 @@ class Player {
     this.lives = 3
     this.hit = false
   }
+  //PLAYER MOVEMENT
   movePlayer() {
-    //
     this.startingIndex = Math.floor(width * width - width)
     squares.forEach(square => square.classList.remove('player'))
     squares[this.playerIndex].classList.add('player')
   }
-  playerShoot() {
-    //link code from main section
-    //ammunition count?
+  //FIRE MISSILE
+  fireMissile () {
+    squares[missilePosition].classList.add('missile')
+    const missileTimer = setInterval(moveMissile, 400)
+    //clear missile if top row or bottom row - may need to go in alienhit function
+    setTimeout(()=> {
+      clearInterval(missileTimer)
+    }, 3400)
   }
+
   playerLives() {
+    console.log(`player has ${this.lives} lives left`)
     //set innerHTML of life counter on scoreboard
   }
+  //confirms player is hit - needs to reduce life counter by 1
   playerHit() {
+    console.log('playerHit')
+    this.lives -= 1
+    console.log(`player has ${this.lives} lives left`)
     //prompt from confirmKill, should -= lives
   }
 }
@@ -95,17 +106,17 @@ class Bombs {
     squares[bombPosition].classList.add('bomb')
     if (squares[bombPosition].classList.contains('player')) {
       console.log('hit')
-      confirmKill()
+      player.playerHit()
     }
-    if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
-      console.log('bomb on bottom line')
-    }
+    // if (squares[bombPosition] && parseInt(squares.id) >= width*width-width) {
+    //   console.log('bomb on bottom line')
+    // }
   }
 }
 
-function confirmKill() {
-  console.log('you dead')
-}
+// function confirmKill() {
+//   console.log('you dead')
+// }
 
 function handleKeyDown(e) {
   let playerShouldMove = true
@@ -130,28 +141,10 @@ function handleKeyDown(e) {
       missileShouldFire = false
   }
   if (playerShouldMove) player.movePlayer()
-  if (missileShouldFire) fireMissile()
+  if (missileShouldFire) player.fireMissile()
 }
 
-
-//PLAYER MOVEMENT---------------------------------------------------------------
-//move to player constructor
-// function movePlayer () {
-//   squares.forEach(square => square.classList.remove('player'))
-//   squares[playerIndex].classList.add('player')
-// }
-
-// Player MISSILE MOVEMENT & TIMER
-// move to player constructor
-function fireMissile () {
-  squares[missilePosition].classList.add('missile')
-  const missileTimer = setInterval(moveMissile, 400)
-  //clear missile if top row or bottom row - may need to go in alienhit function
-  setTimeout(()=> {
-    clearInterval(missileTimer)
-  }, 3400)
-}
-
+//MISSILE MOVEMENT--------------------------------------------------------------
 function moveMissile() {
   squares[missilePosition].classList.remove('missile')
   missilePosition -= width
