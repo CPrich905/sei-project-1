@@ -9,35 +9,35 @@ let missilePosition = null
 
 
 // PLAYER CONSTRUCTION
-class Player {
-  constructor(startingIndex, shoot, move, lives, hit) {
-    this.startingIndex = startingIndex
-    this.shoot = false
-    this.move = false // change to true on startBtn?
-    this.lives = 3
-    this.hit = false
-  }
-  movePlayer() {
-    //link code from main section
-  }
-  playerShoot() {
-    //link code from main section
-    //ammunition?
-  }
-  playerLives() {
-    //may be needed for scoreboard
-  }
-}
+// class Player {
+//   constructor(startingIndex, shoot, move, lives, hit) {
+//     this.startingIndex = startingIndex
+//     this.shoot = false
+//     this.move = false // change to true on startBtn?
+//     this.lives = 3
+//     this.hit = false
+//   }
+  // movePlayer() {
+  //   //link code from main section
+  // }
+  // playerShoot() {
+  //   //link code from main section
+  //   //ammunition?
+  // }
+  // playerLives() {
+  //   //may be needed for scoreboard
+  // }
+// }
 
 //ALIEN CONSTRUCTION
 
 class Alien {
-  constructor(rank, startingIndex, position, alienhit, alienShoot, alienCount) {
+  constructor(rank, startingIndex, position, alienhit, alienShouldFire, alienCount) {
     this.rank = rank
     this.startingIndex = startingIndex
     this.position = startingIndex
     this.alienhit = false
-    this.alienShoot = alienShoot
+    this.alienShouldFire = alienShouldFire
     this.alienCount = alienCount
   }
   moveEnemy() {
@@ -61,6 +61,7 @@ class Alien {
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
+
 }
 
 function handleKeyDown(e) {
@@ -77,7 +78,7 @@ function handleKeyDown(e) {
         playerIndex--
       }
       break
-    case 32:
+    case 83:
       missileShouldFire = true
       missilePosition = playerIndex - width
       break
@@ -102,6 +103,7 @@ function movePlayer () {
 function fireMissile () {
   squares[missilePosition].classList.add('missile')
   const missileTimer = setInterval(moveMissile, 400)
+  //clear missile if top row or bottom row - may need to go in alienhit function
   setTimeout(()=> {
     clearInterval(missileTimer)
   }, 3400)
@@ -131,6 +133,7 @@ function checkHit() {
   })
 }
 
+
 // ALIEN SHOOT --------------------------------------------------------------
 // function  alienShoot() {
 //  // function to take prompt from alienMove/start button
@@ -138,7 +141,7 @@ function checkHit() {
 //  // push score to scoreboard
 // }
 
-// PLAYER HIT ---------------------------------------------------------------
+// CHECK HIT ON PLAYER --------------------------------------------------------
 // if playerHit
 // add class 'flashing' for 3 seconds
 // push innerHTML to scoreboard
@@ -179,13 +182,13 @@ function init() {
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
     }, 25000)
+    const enemyShootTimer = setInterval(alienShoot, 1600)
   }
+
   // PAUSE BUTTON - doesn't fucking work!
   function pauseGame(enemyMovementTimer) {
     console.log('pause button')
-
     clearInterval(enemyMovementTimer)
-
   }
   // ALIEN MOVE --------------------------------------------------------------
 
@@ -220,6 +223,19 @@ function init() {
       })
     }
   }
+  function alienShoot() {
+    //firingAlien = random from aliens array
+    let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
+    console.log(`alien ${firingAlien.rank} should fire`)
+    // console.log(`${firingAlien} this alien should fire`)
+    // aliens.find(alien => alien.rank)
+    //
+    // const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id)
+
+
+    // const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
+  }
+
 
 
 }
