@@ -9,6 +9,7 @@ let alienCount = 0 // counts movement across grid width
 let playerIndex = [] // will put player to bottom LHS of grid
 let missilePosition = null
 let bombPosition = null
+const missiles = []
 
 
 // PLAYER CONSTRUCTION ---------------------------------------------------------
@@ -27,25 +28,39 @@ class Player {
     squares[this.playerIndex].classList.add('player')
   }
   //FIRE MISSILE
-  fireMissile () {
-    squares[missilePosition].classList.add('missile')
-    const missileTimer = setInterval(moveMissile, 400)
-    //clear missile if top row or bottom row - may need to go in alienhit function
-    setTimeout(()=> {
-      clearInterval(missileTimer)
-    }, 3400)
-  }
+  // fireMissile () {
+  //   squares[missilePosition].classList.add('missile')
+  //   const missileTimer = setInterval(moveMissile, 400)
+  //   //clear missile if top row or bottom row - may need to go in alienhit function
+  //   setTimeout(()=> {
+  //     clearInterval(missileTimer)
+  //   }, 3400)
+  // }
 
-  playerLives() {
-    console.log(`player has ${this.lives} lives left`)
-    //set innerHTML of life counter on scoreboard
-  }
-  //confirms player is hit - needs to reduce life counter by 1
+  //confirms player is hit - reduces life counter by 1
   playerHit() {
-    console.log('playerHit')
     this.lives -= 1
     console.log(`player has ${this.lives} lives left`)
-    //prompt from confirmKill, should -= lives
+    //if player lives < 3, window alert 'you lost, try again?'
+  }
+}
+
+//MISSILE CONSTRUCTION
+class Missile {
+  constructor(missileIndex, shouldTrack) {
+    this.missileIndex = missileIndex
+    this.shouldTrack = shouldTrack
+    this.fireMissile()
+  }
+
+  fireMissile () {
+    console.log(`missile should launch from position ${this.missileIndex}`)
+    squares[this.missileIndex].classList.add('missile')
+    // const missileTimer = setInterval(moveMissile, 400)
+    // //clear missile if top row or bottom row - may need to go in alienhit function
+    // setTimeout(()=> {
+    //   clearInterval(missileTimer)
+    // }, 3400)
   }
 }
 
@@ -122,26 +137,30 @@ function handleKeyDown(e) {
   let playerShouldMove = true
   let missileShouldFire = false
   switch(e.keyCode) {
-    case 39:
+    case 39: // right-arrow
       if (player.playerIndex % width < width-1) {
         player.playerIndex++
       }
       break
-    case 37:
+    case 37: // left-arow
       if (player.playerIndex % width > 0) {
         player.playerIndex--
       }
       break
-    case 83:
-      missileShouldFire = true
-      missilePosition = player.playerIndex - width
+    case 83: // fire (s-key)
+      missiles.push(new Missile(player.playerIndex - width))
+
+      // missiles.missileShouldFire = true
+      // missiles.missileIndex = player.playerIndex - width
+      // console.log(typeof missileIndex)
+
       break
     default:
       playerShouldMove = false
       missileShouldFire = false
   }
   if (playerShouldMove) player.movePlayer()
-  if (missileShouldFire) player.fireMissile()
+  if (missileShouldFire) console.log('missile fire must push to Missiles')
 }
 
 //MISSILE MOVEMENT--------------------------------------------------------------
