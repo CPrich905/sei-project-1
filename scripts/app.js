@@ -29,8 +29,15 @@ class Player {
   }
   //confirms player is hit - reduces life counter by 1
   playerHit() {
-    this.lives -= 1
-    console.log(`player has ${this.lives} lives left`)
+    squares.forEach(square => {
+      if(square.classList.contains('bomb') && square.classList.contains('player')) {
+        console.log('player hit')
+      } else {
+        console.log('aliens missed')
+      }
+    })
+    // this.lives -= 1
+    // console.log(`player has ${this.lives} lives left`)
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
@@ -55,6 +62,7 @@ class Missile {
     } else {
       squares[this.missileIndex].classList.add('missile')
     }
+    checkHit()
   }
 }
 
@@ -92,8 +100,6 @@ class Alien {
   }
   // initiate a bomb in here, taking id from random alien (within init)
   kaboom() {
-    console.log('toms genius idea')
-
     bombs.push(new Bombs(this.position))
   }
 }
@@ -116,13 +122,19 @@ class Bombs {
     if (this.position > width*width) {
       clearInterval(this.fallTimer)
     } else {
-      console.log('shit')
       squares[this.position].classList.add('bomb')
     }
+    checkPlayerHit()
   }
 }
 
-
+function checkPlayerHit() {
+  squares.forEach(square => {
+    if(square.classList.contains('bomb') && square.classList.contains('player')) {
+      console.log('player hit')
+    }
+  })
+}
 // function confirmKill() {
 //   console.log('you dead')
 // }
@@ -149,7 +161,7 @@ function handleKeyDown(e) {
       missileShouldFire = false
   }
   if (playerShouldMove) player.movePlayer()
-  if (missileShouldFire) missile.moveMissile()
+  if (missileShouldFire) missiles.moveMissile()
 }
 
 //MISSILE MOVEMENT--------------------------------------------------------------
@@ -163,9 +175,9 @@ function handleKeyDown(e) {
 // }
 // CHECK HIT ON ALIEN ----------------------------------------------------------
 function checkHit() {
-  console.log('hit')
   squares.forEach(square => {
     if(square.classList.contains('missile') && square.classList.contains('alien')) {
+      console.log('hit')
       square.classList.remove('alien', 'missile')
       // console.log(square.id)
       // console.log('aliens in checkHit', aliens)
@@ -177,10 +189,8 @@ function checkHit() {
   })
 }
 
+// CHECK HIT ON PLAYER ------------------------------------------------------
 
-
-
-// CHECK HIT ON PLAYER --------------------------------------------------------
 // if playerHit
 // add class 'flashing' for 3 seconds
 // push innerHTML to scoreboard
@@ -215,7 +225,7 @@ function init() {
   start.addEventListener('click', play)
   pause.addEventListener('click', pauseGame)
 
-  // ALIEN MOVEMENT & FIRE TIMER------------------------------------------------
+  // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
 
   function play() {
     const enemyMovementTimer = setInterval(alienMove, 800)
@@ -223,7 +233,7 @@ function init() {
       clearInterval(enemyMovementTimer)
     }, 25000)
 
-    const enemyShootTimer = setInterval(alienShoot, 500)
+    const enemyShootTimer = setInterval(alienShoot, 900)
     setTimeout(() => {
       clearInterval(enemyShootTimer)
     }, 2000)
@@ -270,16 +280,10 @@ function init() {
 
   //ALIEN FIRE ALLOCATION ----------------------------------------------------
   function alienShoot() {
-    //firingAlien = random from aliens array
-    aliens[Math.floor(Math.random()*aliens.length)].kaboom()
-
-    // console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
-    // tell alien to drop bomb (can then remove code below)
-
-    // assigns bombPosition as the position of the alien, passes it to bomb array
-    // bombPosition = firingAlien.position
-    // console.log(bombPosition)
-
+    //slects a random alien and calls kaboom(bomb drop) function
+    if (!aliens.alienhit){
+      aliens[Math.floor(Math.random()*aliens.length)].kaboom()
+    }
   }
 
 }
