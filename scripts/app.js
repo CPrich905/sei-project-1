@@ -1,6 +1,7 @@
 const width = 10
 const squares = []
 const aliens = []
+const bombs = []
 // let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
@@ -62,9 +63,17 @@ class Alien {
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
+}
+
+class Bomb {
+  constructor(position) {
+    this.position = position
+  }
   bombsAway() {
     console.log('bombs away')
-    squares[this.position+width].classList.add('bomb')
+    // squares[this.position+width].classList.add('bomb')
+    // const bombDrop = setInterval(bombsAway, 300)
+    // console.log(`bomb position is ${bombs.position}`)
   }
 }
 
@@ -179,7 +188,7 @@ function init() {
   start.addEventListener('click', play)
   pause.addEventListener('click', pauseGame)
 
-  // ALIEN MOVEMENT & TIMER----------------------------------------------------
+  // ALIEN MOVEMENT & FIRE TIMER------------------------------------------------
 
   function play() {
     const enemyMovementTimer = setInterval(alienMove, 800)
@@ -230,16 +239,21 @@ function init() {
   function alienShoot() {
     //firingAlien = random from aliens array
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
-    console.log(`alien ${firingAlien.rank} should fire from this ${firingAlien.position} position`)
-    firingAlien.bombsAway()
+    console.log(`alien ${firingAlien.rank} should fire from position ${firingAlien.position}`)
+    bombs.push(new Bomb([this.position+width]))
+    console.log(bombs)
+    bombs.forEach(bomb => {
+      bomb.bombsAway()
+    })
 
-    // console.log(`${firingAlien} this alien should fire`)
-    // aliens.find(alien => alien.rank)
-    //
-    // const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id)
 
+    // squares[missilePosition].classList.add('missile')
+    // const missileTimer = setInterval(moveMissile, 400)
+    //clear missile if top row or bottom row - may need to go in alienhit function
+    // setTimeout(()=> {
+    //   clearInterval(missileTimer)
+    // }, 3400)
 
-    // const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
   }
 
 
