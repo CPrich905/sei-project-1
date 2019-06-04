@@ -1,5 +1,4 @@
 const width = 10
-// const rows = [] // only needed if using row format
 const squares = []
 const aliens = []
 // let alienIndex = 0
@@ -8,6 +7,27 @@ let alienCount = 0 // counts movement across grid width
 let playerIndex = Math.floor(width * width - width) // will put player to bottom LHS of grid
 let missilePosition = null
 
+
+// PLAYER CONSTRUCTION
+class Player {
+  constructor(startingIndex, shoot, move, lives, hit) {
+    this.startingIndex = startingIndex
+    this.shoot = false
+    this.move = false // change to true on startBtn?
+    this.lives = 3
+    this.hit = false
+  }
+  movePlayer() {
+    //link code from main section
+  }
+  playerShoot() {
+    //link code from main section
+    //ammunition?
+  }
+  playerLives() {
+    //may be needed for scoreboard
+  }
+}
 
 //ALIEN CONSTRUCTION
 
@@ -22,7 +42,7 @@ class Alien {
   }
   moveEnemy() {
     squares[this.position].classList.remove('alien')
-    squares[this.position].removeAttribute('id')
+    // squares[this.position].removeAttribute('id')
     if (movingRight) {
       this.position ++
       this.alienCount ++
@@ -35,7 +55,7 @@ class Alien {
   }
   dropLine() {
     squares[this.position].classList.remove('alien')
-    squares[this.position].removeAttribute('id')
+    // squares[this.position].removeAttribute('id')
     this.position += width
     movingRight = !movingRight
     squares[this.position].classList.add('alien')
@@ -70,19 +90,21 @@ function handleKeyDown(e) {
 }
 
 
-//PLAYER MOVEMENT
+//PLAYER MOVEMENT---------------------------------------------------------------
+//move to player constructor
 function movePlayer () {
   squares.forEach(square => square.classList.remove('player'))
   squares[playerIndex].classList.add('player')
 }
 
-// MISSILE MOVEMENT & TIMER
+// Player MISSILE MOVEMENT & TIMER
+// move to player constructor
 function fireMissile () {
   squares[missilePosition].classList.add('missile')
   const missileTimer = setInterval(moveMissile, 400)
   setTimeout(()=> {
     clearInterval(missileTimer)
-  }, 3000)
+  }, 3400)
 }
 
 function moveMissile() {
@@ -93,25 +115,36 @@ function moveMissile() {
     checkHit()
   }
 }
-
+// CHECK HIT ON ALIEN ----------------------------------------------------------
 function checkHit() {
   console.log('hit')
   squares.forEach(square => {
     if(square.classList.contains('missile') && square.classList.contains('alien')) {
       square.classList.remove('alien', 'missile')
-      console.log(square.id)
-      console.log('aliens in checkHit', aliens)
+      // console.log(square.id)
+      // console.log('aliens in checkHit', aliens)
       const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
-      console.log(deadAliens)
+      // console.log(deadAliens)
       deadAliens.alienhit = true
-
-      // aliens.id.alienHit = true // work out which alien is hit, change alienHit to true
-      // console.log(aliens[this.rank])
-      // square.classList.remove('missile')
+      // push score to scoreboard
     }
   })
 }
 
+// ALIEN SHOOT --------------------------------------------------------------
+// function  alienShoot() {
+//  // function to take prompt from alienMove/start button
+//  // take player shoot function & duplicate with missile firing down screen
+//  // push score to scoreboard
+// }
+
+// PLAYER HIT ---------------------------------------------------------------
+// if playerHit
+// add class 'flashing' for 3 seconds
+// push innerHTML to scoreboard
+
+
+// INIT ---------------------------------------------------------------INIT
 function init() {
   // GRID INITIALISATION: for loop to fill grid with squares
   // GRID - 8 LINES
@@ -139,21 +172,22 @@ function init() {
   start.addEventListener('click', play)
   pause.addEventListener('click', pauseGame)
 
-  // ALIEN MOVEMENT & TIMER
+  // ALIEN MOVEMENT & TIMER----------------------------------------------------
 
   function play() {
     const enemyMovementTimer = setInterval(alienMove, 800)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 20000)
+    }, 25000)
   }
   // PAUSE BUTTON - doesn't fucking work!
   function pauseGame(enemyMovementTimer) {
     console.log('pause button')
-    setTimeout(() => {
-      clearInterval(enemyMovementTimer)
-    })
+
+    clearInterval(enemyMovementTimer)
+
   }
+  // ALIEN MOVE --------------------------------------------------------------
 
   function alienMove() {
     if (movingRight) {
@@ -186,6 +220,7 @@ function init() {
       })
     }
   }
+
 
 }
 
