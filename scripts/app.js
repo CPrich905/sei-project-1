@@ -64,6 +64,7 @@ class Alien {
   }
   bombsAway() {
     console.log('bombs away')
+    squares[this.position+width].classList.add('bomb')
   }
 }
 
@@ -230,7 +231,6 @@ function init() {
     //firingAlien = random from aliens array
     let firingAlien = aliens[Math.floor(Math.random()*aliens.length)]
     console.log(`alien ${firingAlien.rank} should fire from this ${firingAlien.position} position`)
-    
     firingAlien.bombsAway()
 
     // console.log(`${firingAlien} this alien should fire`)
