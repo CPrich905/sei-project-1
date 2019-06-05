@@ -6,6 +6,7 @@
 main {
   height: 60%;
   width: 100vw;
+
 }
 header {
   height: 200px;
@@ -18,20 +19,25 @@ header {
 }
 
 body {
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
+div.flex-container{
+    background-image: url('../images/background-space.jpeg')
+}
+
 div.other-screen {
   flex: 40%;
-  background-color: blue;
+  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
 }
 
 div.play-screen {
   background-color: grey;
+  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
   flex: 60%;
 }
 
@@ -43,9 +49,9 @@ div.grid {
   flex-wrap: wrap;
 }
 div.grid-item {
-  width: 50px;
-  height: 50px;
-  border: 1px dashed black;
+  width: 25px;
+  height: 25px;
+  /* border: 1px dashed black; */
 }
 div.grid-item.player {
   background-image: url('../images/baseshipa.ico');
