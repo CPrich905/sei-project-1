@@ -241,6 +241,7 @@ function init() {
   // EVENT LISTENERS
   window.addEventListener('keydown', handleKeyDown)
   start.addEventListener('click', play)
+  start.addEventListener('mouseout', levelUp)
   pause.addEventListener('click', pauseGame)
 
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
@@ -255,6 +256,10 @@ function init() {
     setTimeout(() => {
       clearInterval(enemyShootTimer)
     }, 60000)
+  }
+
+  function levelUp() {
+    start.innerHTML = 'Level Up!'
   }
 
   // PAUSE BUTTON - doesn't fucking work!
