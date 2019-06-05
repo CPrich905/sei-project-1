@@ -29,14 +29,15 @@ class Player {
   }
   //confirms player is hit - reduces life counter by 1
   playerHit() {
-    squares.forEach(square => {
-      if(square.classList.contains('bomb') && square.classList.contains('player')) {
-        this.lives -= 1
-        console.log(`player has ${this.lives} lives left`)
-      } else {
-        console.log('aliens missed')
-      }
-    })
+    console.log('player playerHit function')
+    // squares.forEach(square => {
+    //   if(square.classList.contains('bomb') && square.classList.contains('player')) {
+    //     this.lives -= 1
+    //     console.log(`player has ${this.lives} lives left`)
+    //   } else {
+    //     console.log('aliens missed')
+    //   }
+    // })
     // this.lives -= 1
     // console.log(`player has ${this.lives} lives left`)
     //if player lives < 3, window alert 'you lost, try again?'
@@ -76,6 +77,7 @@ class Alien {
     this.position = startingIndex
     this.alienhit = false
     this.alienShouldFire = false
+    this.movingRight = true
     this.alienCount = alienCount
   }
   moveEnemy() {
@@ -84,7 +86,7 @@ class Alien {
     if (movingRight) {
       this.position ++
       this.alienCount ++
-    } else {
+    } else if (!movingRight) {
       this.position --
       this.alienCount --
       console.log('moving left')
@@ -96,13 +98,9 @@ class Alien {
     squares[this.position].classList.remove('alien')
     // squares[this.position].removeAttribute('id')
     this.position += width
-    console.log('change direction')
-    // if (alienCount === 13) {
-    //   movingRight = false
-    // } else if (alienCount === 0){
-    //   movingRight
-    // }
     movingRight = !movingRight
+    console.log('Boolean movingRight should switch')
+    console.log(movingRight)
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
@@ -132,18 +130,20 @@ class Bombs {
     } else {
       squares[this.position].classList.add('bomb')
     }
-    player.playerHit()
-
+    if (this.position >= width*width-width) {
+      checkPlayerHit()
+    }
   }
 }
 
-// function checkPlayerHit() {
-//   squares.forEach(square => {
-//     if(square.classList.contains('bomb') && square.classList.contains('player')) {
-//       console.log('player hit')
-//     }
-//   })
-// }
+function checkPlayerHit() {
+  squares.forEach(square => {
+    if(square.classList.contains('bomb') && square.classList.contains('player')) {
+      console.log('player hit, run playerHit function')
+      player.playerHit()
+    }
+  })
+}
 
 
 function handleKeyDown(e) {
@@ -216,20 +216,21 @@ function init() {
     grid.append(square)
   }
 
-  aliens.push(new Alien(0, 0, null, true, false, false, 0))
-  aliens.push(new Alien(1, 2, null, true, false, false, 0))
-  aliens.push(new Alien(2, 4, null, true, false, false, 0))
-  aliens.push(new Alien(3, 6, null, true, false, false, 0))
+  aliens.push(new Alien(0, 1, null, true, false, false, 0))
+  aliens.push(new Alien(1, 3, null, true, false, false, 0))
+  aliens.push(new Alien(2, 5, null, true, false, false, 0))
+  aliens.push(new Alien(3, 7, null, true, false, false, 0))
   //second line
-  aliens.push(new Alien(4, width+1, null, true, false, false, 0))
-  aliens.push(new Alien(5, width+3, null, true, false, false, 0))
-  aliens.push(new Alien(6, width+5, null, true, false, false, 0))
-  aliens.push(new Alien(7, width+7, null, true, false, false, 0))
+  aliens.push(new Alien(4, width+0, null, true, false, false, 0))
+  aliens.push(new Alien(5, width+2, null, true, false, false, 0))
+  aliens.push(new Alien(6, width+4, null, true, false, false, 0))
+  aliens.push(new Alien(7, width+6, null, true, false, false, 0))
+  aliens.push(new Alien(8, width+8, null, true, false, false, 0))
   //third line
-  aliens.push(new Alien(8, width*2+0, null, true, false, false, 0))
-  aliens.push(new Alien(9, width*2+2, null, true, false, false, 0))
-  aliens.push(new Alien(10, width*2+4, null, true, false, false, 0))
-  aliens.push(new Alien(11, width*2+6, null, true, false, false, 0))
+  aliens.push(new Alien(8, width*2+1, null, true, false, false, 0))
+  aliens.push(new Alien(9, width*2+3, null, true, false, false, 0))
+  aliens.push(new Alien(10, width*2+5, null, true, false, false, 0))
+  aliens.push(new Alien(11, width*2+7, null, true, false, false, 0))
   // console.log(aliens)
   // console.log(aliens.find(alien => alien.rank === 0))
   player = new Player(width*width-width, false, true, 3, false)
@@ -249,7 +250,7 @@ function init() {
     const enemyMovementTimer = setInterval(alienMove, 800)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 25000)
+    }, 30000)
 
     const enemyShootTimer = setInterval(alienShoot, 950)
     setTimeout(() => {
@@ -281,7 +282,7 @@ function init() {
       alienCount --
     }
 
-    if (alienCount === 12) {
+    if (alienCount === 11) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
         // alien.position += width+1
