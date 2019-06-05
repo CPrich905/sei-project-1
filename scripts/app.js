@@ -58,7 +58,7 @@ class Missile {
   fireMissile () {
     squares[this.missileIndex].classList.add('missile')
     this.moveMissile()
-    this.missileTimer = setInterval( () => this.moveMissile(), 600)
+    this.missileTimer = setInterval( () => this.moveMissile(), 300)
   }
   moveMissile() {
     squares[this.missileIndex].classList.remove('missile')
@@ -118,15 +118,20 @@ class Bombs {
   bombsAway() {
     squares[this.position].classList.add('bomb')
     this.bombDrops()
-    this.fallTimer = setInterval( () => this.bombDrops(), 800)
+    this.fallTimer = setInterval( () => this.bombDrops(), 300)
   }
   bombDrops() {
     squares[this.position].classList.remove('bomb')
     this.position += width
     if (this.position > width*width) {
       clearInterval(this.fallTimer)
+      // squares[this.position].classList.remove('bomb')
     } else {
-      squares[this.position].classList.add('bomb')
+      if (squares[this.position]) {
+        squares[this.position].classList.add('bomb')
+      } else {
+        clearInterval(this.fallTimer)
+      }
     }
     if (this.position >= width*width-width) {
       checkPlayerHit()
@@ -185,10 +190,8 @@ function checkHit() {
 
 // SCORE BOARD -----------------------------------------------------------------
 function updateScoreBoard() {
-  console.log('updateScoreBoard function')
   currentScore += 500
   console.log(`updateScoreBoard with new score of ${currentScore}`)
-  console.log(score)
   score.innerHTML = currentScore
 }
 
@@ -221,12 +224,12 @@ function init() {
   aliens.push(new Alien(7, width+6, null, true, false, 0))
   aliens.push(new Alien(8, width+8, null, true, false, 0))
   //third line
-  aliens.push(new Alien(8, width*2+1, null, true, false, 0))
-  aliens.push(new Alien(9, width*2+3, null, true, false, 0))
-  aliens.push(new Alien(10, width*2+5, null, true, false, 0))
-  aliens.push(new Alien(11, width*2+7, null, true, false, 0))
+  aliens.push(new Alien(9, width*2+1, null, true, false, 0))
+  aliens.push(new Alien(10, width*2+3, null, true, false, 0))
+  aliens.push(new Alien(11, width*2+5, null, true, false, 0))
+  aliens.push(new Alien(12, width*2+7, null, true, false, 0))
   // console.log(aliens)
-  // console.log(aliens.find(alien => alien.rank === 0))
+
   player = new Player(width*width-width, false, true, 3, false)
   // console.log(player)
 
@@ -243,15 +246,15 @@ function init() {
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
 
   function play() {
-    const enemyMovementTimer = setInterval(alienMove, 800)
+    const enemyMovementTimer = setInterval(alienMove, 500)
     setTimeout(()=> {
       clearInterval(enemyMovementTimer)
-    }, 30000)
+    }, 60000)
 
     const enemyShootTimer = setInterval(alienShoot, 950)
     setTimeout(() => {
       clearInterval(enemyShootTimer)
-    }, 2000)
+    }, 60000)
   }
 
   // PAUSE BUTTON - doesn't fucking work!
@@ -260,7 +263,7 @@ function init() {
     clearInterval(enemyMovementTimer)
   }
   // ALIEN MOVE --------------------------------------------------------------
-
+  // moving this & timer into the Class should stop the movement bug.
   function alienMove() {
     if (movingRight) {
       // console.log('move right')
@@ -278,13 +281,13 @@ function init() {
       alienCount --
     }
 
-    if (aliens[1].alienCount === 11) {
+    if (alienCount === 11) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
         // alien.position += width+1
         // movingRight = !movingRight
       })
-    } else if (aliens[1].alienCount === 0) {
+    } else if (alienCount === 0) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
         // alien.position += width-1
