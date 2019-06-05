@@ -7,6 +7,7 @@ const bombs = []
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
 const playerIndex = [] // will put player to bottom LHS of grid
+let livesleft = null
 const missilePosition = null
 const bombPosition = null
 const missiles = []
@@ -35,15 +36,17 @@ class Player {
     squares.forEach(square => {
       if(square.classList.contains('bomb') && square.classList.contains('player')) {
         console.log(square)
-        this.lives -= 1
         // console.log(`player has ${this.lives} lives left`)
       }
     })
     this.lives -= 1
     console.log(`player has ${this.lives} lives left`)
+    livesleft.innerHTML = this.lives
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
+
+
 
 //MISSILE CONSTRUCTION - nice to have: put an ammo counter on this & limit number of fires
 class Missile {
@@ -106,7 +109,6 @@ class Alien {
   }
 }
 
-
 // BOMB LOGIC ----------------------------------------------------------------
 class Bombs {
   constructor(position) {
@@ -167,15 +169,7 @@ function handleKeyDown(e) {
   if (missileShouldFire) missiles.moveMissile()
 }
 
-//MISSILE MOVEMENT--------------------------------------------------------------
-// function moveMissile() {
-//   squares[missilePosition].classList.remove('missile')
-//   missilePosition -= width
-//   squares[missilePosition].classList.add('missile')
-//   if (squares[missilePosition].classList.contains('alien')) {
-//     checkHit()
-//   }
-// }
+
 // CHECK HIT ON ALIEN ----------------------------------------------------------
 function checkHit() {
   squares.forEach(square => {
@@ -189,25 +183,21 @@ function checkHit() {
   })
 }
 
+// SCORE BOARD -----------------------------------------------------------------
 function updateScoreBoard() {
-  // const score = document.querySelector('#player-score')
   console.log('updateScoreBoard function')
   currentScore += 500
   console.log(`updateScoreBoard with new score of ${currentScore}`)
   console.log(score)
   score.innerHTML = currentScore
-  // innerHTML
 }
-
-
-// CHECK HIT ON PLAYER ------------------------------------------------------
 
 // if playerHit
 // add class 'flashing' for 3 seconds
 // push innerHTML to scoreboard
 
 
-// INIT ---------------------------------------------------------------INIT
+// INIT---------------------------------------------------------------------INIT
 function init() {
   // GRID INITIALISATION: for loop to fill grid with squares
   // GRID - 8 LINES
