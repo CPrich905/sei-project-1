@@ -27,16 +27,19 @@ body {
 }
 
 div.flex-container{
-    background-image: url('../images/background-space.jpeg')
+    background-image: url('../images/background-space.jpeg');
 }
 
 div.other-screen {
+  color: white;
   flex: 40%;
-  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
+  /* background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5)); */
 }
 
+
+
 div.play-screen {
-  background-color: grey;
+  /* background-color: grey; */
   background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
   flex: 60%;
 }

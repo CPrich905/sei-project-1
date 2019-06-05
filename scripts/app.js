@@ -6,9 +6,9 @@ const bombs = []
 // let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
-let playerIndex = [] // will put player to bottom LHS of grid
-let missilePosition = null
-let bombPosition = null
+const playerIndex = [] // will put player to bottom LHS of grid
+const missilePosition = null
+const bombPosition = null
 const missiles = []
 
 
@@ -29,17 +29,16 @@ class Player {
   }
   //confirms player is hit - reduces life counter by 1
   playerHit() {
-    console.log('player playerHit function')
-    // squares.forEach(square => {
-    //   if(square.classList.contains('bomb') && square.classList.contains('player')) {
-    //     this.lives -= 1
-    //     console.log(`player has ${this.lives} lives left`)
-    //   } else {
-    //     console.log('aliens missed')
-    //   }
-    // })
-    // this.lives -= 1
-    // console.log(`player has ${this.lives} lives left`)
+    // console.log('playerHit function')
+    squares.forEach(square => {
+      if(square.classList.contains('bomb') && square.classList.contains('player')) {
+        console.log(square)
+        this.lives -= 1
+        // console.log(`player has ${this.lives} lives left`)
+      }
+    })
+    this.lives -= 1
+    console.log(`player has ${this.lives} lives left`)
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
@@ -89,22 +88,17 @@ class Alien {
     } else if (!movingRight) {
       this.position --
       this.alienCount --
-      console.log('moving left')
     }
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
   dropLine() {
     squares[this.position].classList.remove('alien')
-    // squares[this.position].removeAttribute('id')
     this.position += width
     movingRight = !movingRight
-    console.log('Boolean movingRight should switch')
-    console.log(movingRight)
     squares[this.position].classList.add('alien')
     squares[this.position].id = this.rank
   }
-  // initiate a bomb in here, taking id from random alien (within init)
   kaboom() {
     bombs.push(new Bombs(this.position))
   }
@@ -186,15 +180,21 @@ function checkHit() {
     if(square.classList.contains('missile') && square.classList.contains('alien')) {
       console.log('hit')
       square.classList.remove('alien', 'missile')
-      // console.log(square.id)
-      // console.log('aliens in checkHit', aliens)
       const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
-      // console.log(deadAliens)
       deadAliens.alienhit = true
-      // push score to scoreboard
+      updateScoreBoard()
     }
   })
 }
+
+function updateScoreBoard() {
+  // const score = document.querySelector('#player-score')
+  console.log('updateScoreBoard function')
+  const currentScore = 0
+  let newScore = currentScore + 500
+  console.log(`updateScoreBoard with new score of ${newScore}`)
+}
+
 
 // CHECK HIT ON PLAYER ------------------------------------------------------
 
@@ -216,27 +216,29 @@ function init() {
     grid.append(square)
   }
 
-  aliens.push(new Alien(0, 1, null, true, false, false, 0))
-  aliens.push(new Alien(1, 3, null, true, false, false, 0))
-  aliens.push(new Alien(2, 5, null, true, false, false, 0))
-  aliens.push(new Alien(3, 7, null, true, false, false, 0))
+  aliens.push(new Alien(0, 1, null, true, false, 0))
+  aliens.push(new Alien(1, 3, null, true, false, 0))
+  aliens.push(new Alien(2, 5, null, true, false, 0))
+  aliens.push(new Alien(3, 7, null, true, false, 0))
   //second line
-  aliens.push(new Alien(4, width+0, null, true, false, false, 0))
-  aliens.push(new Alien(5, width+2, null, true, false, false, 0))
-  aliens.push(new Alien(6, width+4, null, true, false, false, 0))
-  aliens.push(new Alien(7, width+6, null, true, false, false, 0))
-  aliens.push(new Alien(8, width+8, null, true, false, false, 0))
+  aliens.push(new Alien(4, width+0, null, true, false, 0))
+  aliens.push(new Alien(5, width+2, null, true, false, 0))
+  aliens.push(new Alien(6, width+4, null, true, false, 0))
+  aliens.push(new Alien(7, width+6, null, true, false, 0))
+  aliens.push(new Alien(8, width+8, null, true, false, 0))
   //third line
-  aliens.push(new Alien(8, width*2+1, null, true, false, false, 0))
-  aliens.push(new Alien(9, width*2+3, null, true, false, false, 0))
-  aliens.push(new Alien(10, width*2+5, null, true, false, false, 0))
-  aliens.push(new Alien(11, width*2+7, null, true, false, false, 0))
+  aliens.push(new Alien(8, width*2+1, null, true, false, 0))
+  aliens.push(new Alien(9, width*2+3, null, true, false, 0))
+  aliens.push(new Alien(10, width*2+5, null, true, false, 0))
+  aliens.push(new Alien(11, width*2+7, null, true, false, 0))
   // console.log(aliens)
   // console.log(aliens.find(alien => alien.rank === 0))
   player = new Player(width*width-width, false, true, 3, false)
-  console.log(player)
+  // console.log(player)
 
-
+  // QUERY SELECTORS ---------------------------------------------------------
+  const livesleft = document.querySelector('.player-lives')
+  const score = document.querySelector('.score')
   const start = document.querySelector('#startBtn')
   const pause = document.querySelector('#pauseBtn')
   // EVENT LISTENERS
