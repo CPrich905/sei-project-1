@@ -10,6 +10,8 @@ const playerIndex = [] // will put player to bottom LHS of grid
 const missilePosition = null
 const bombPosition = null
 const missiles = []
+let currentScore = 0
+let score = null
 
 
 // PLAYER CONSTRUCTION ---------------------------------------------------------
@@ -190,9 +192,11 @@ function checkHit() {
 function updateScoreBoard() {
   // const score = document.querySelector('#player-score')
   console.log('updateScoreBoard function')
-  const currentScore = 0
-  let newScore = currentScore + 500
-  console.log(`updateScoreBoard with new score of ${newScore}`)
+  currentScore += 500
+  console.log(`updateScoreBoard with new score of ${currentScore}`)
+  console.log(score)
+  score.innerHTML = currentScore
+  // innerHTML
 }
 
 
@@ -237,8 +241,8 @@ function init() {
   // console.log(player)
 
   // QUERY SELECTORS ---------------------------------------------------------
-  const livesleft = document.querySelector('.player-lives')
-  const score = document.querySelector('.score')
+  livesleft = document.querySelector('#player-lives')
+  score = document.querySelector('#score')
   const start = document.querySelector('#startBtn')
   const pause = document.querySelector('#pauseBtn')
   // EVENT LISTENERS
@@ -284,13 +288,13 @@ function init() {
       alienCount --
     }
 
-    if (alienCount === 11) {
+    if (aliens[1].alienCount === 11) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
         // alien.position += width+1
         // movingRight = !movingRight
       })
-    } else if (alienCount === 0) {
+    } else if (aliens[1].alienCount === 0) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
         // alien.position += width-1
