@@ -42,6 +42,12 @@ class Player {
     this.lives -= 1
     console.log(`player has ${this.lives} lives left`)
     livesleft.innerHTML = this.lives
+    if (this.lives < 3) {
+      livesleft.style.color = 'orange'
+    }
+    if (this.lives < 2) {
+      livesleft.style.color = 'red'
+    }
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
@@ -268,7 +274,7 @@ function init() {
     clearInterval(enemyMovementTimer)
   }
   // ALIEN MOVE --------------------------------------------------------------
-  // moving this & timer into the Class should stop the movement bug.
+  // moving this & timer into the Class could stop the movement bug. Will need to bind alienMove, alienhit and moveEnemy functions where timer is called on alienShoot(). Alternatively move alienShoot as well and include all functions in Aliens Class https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
   function alienMove() {
     if (movingRight) {
       // console.log('move right')

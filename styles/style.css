@@ -30,13 +30,37 @@ div.flex-container{
     background-image: url('../images/background-space.jpeg');
 }
 
+/* left hand side of screen */
+
 div.other-screen {
   color: white;
   flex: 40%;
   background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 40px;
+}
+p {
+  color: #8800cc;
+}
+
+#player-lives {
+  color: green;
 }
 
 
+
+div.scoreboard {
+  justify-content: center;
+}
+
+div.lives {
+  align-self: center;
+}
+
+/* Play screen CSS */
 
 div.play-screen {
   /* background-color: grey; */
