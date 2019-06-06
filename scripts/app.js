@@ -259,6 +259,7 @@ function init() {
 
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
   let enemyMovementTimer = null
+  let enemyShootTimer = null
 
   function play() {
     enemyMovementTimer = setInterval(alienMove, 500)
@@ -266,7 +267,7 @@ function init() {
       clearInterval(enemyMovementTimer)
     }
 
-    const enemyShootTimer = setInterval(alienShoot, 950)
+    enemyShootTimer = setInterval(alienShoot, 950)
     setTimeout(() => {
       clearInterval(enemyShootTimer)
     }, 60000)
@@ -279,8 +280,8 @@ function init() {
   // PAUSE BUTTON - doesn't fucking work!
   function pauseGame() {
     console.log('pause button')
-    console.log(play.enemyMovementTimer)
     clearInterval(enemyMovementTimer)
+    clearInterval(enemyShootTimer)
   }
   // ALIEN MOVE --------------------------------------------------------------
   // moving this & timer into the Class could stop the movement bug. Will need to bind alienMove, alienhit and moveEnemy functions where timer is called on alienShoot(). Alternatively move alienShoot as well and include all functions in Aliens Class https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
