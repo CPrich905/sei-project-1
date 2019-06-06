@@ -3,24 +3,21 @@ const squares = []
 let player = null
 const aliens = []
 const bombs = []
-// let alienIndex = 0
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
-const playerIndex = [] // will put player to bottom LHS of grid
 let livesleft = null
-const missilePosition = null
-const bombPosition = null
 const missiles = []
 let currentScore = 0
 let score = null
+let enemyMovementTimer = null
+let enemyShootTimer = null
+
 
 
 // PLAYER CONSTRUCTION ---------------------------------------------------------
 class Player {
-  constructor(startingIndex, shoot, move, lives, hit) {
+  constructor(startingIndex) {
     this.playerIndex = startingIndex
-    this.shoot = false
-    this.move = false // change to true on startBtn?
     this.lives = 3
     this.hit = false
   }
@@ -39,25 +36,29 @@ class Player {
         // console.log(`player has ${this.lives} lives left`)
       }
     })
-    this.lives -= 1
+    player.lives -= 1
     console.log(`player has ${this.lives} lives left`)
     livesleft.innerHTML = this.lives
-    if (this.lives < 3) {
+    if (player.lives < 3) {
       livesleft.style.color = 'orange'
     }
-    if (this.lives < 2) {
+    if (player.lives < 2) {
       livesleft.style.color = 'red'
     }
     if (this.lives === 0) {
-      alert('You suck! Play again?')
+      setTimeout(youLose, 500)
     }
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
 
+function youLose() {
+  alert(`Your score was ${currentScore} - if you'd like to try again, hit the reset button!`)
+}
 
 
 //MISSILE CONSTRUCTION - nice to have: put an ammo counter on this & limit number of fires
+// missile doesn't clear correctly on hit - continues through to second rank
 class Missile {
   constructor(missileIndex, shouldTrack) {
     this.missileIndex = missileIndex
@@ -67,7 +68,7 @@ class Missile {
   fireMissile () {
     squares[this.missileIndex].classList.add('missile')
     this.moveMissile()
-    this.missileTimer = setInterval( () => this.moveMissile(), 200)
+    this.missileTimer = setInterval( () => this.moveMissile(), 100)
   }
   moveMissile() {
     squares[this.missileIndex].classList.remove('missile')
@@ -119,6 +120,8 @@ class Alien {
 }
 
 // BOMB LOGIC ----------------------------------------------------------------
+
+
 class Bombs {
   constructor(position) {
     this.position = position
@@ -143,21 +146,25 @@ class Bombs {
       }
     }
     if (this.position >= width*width-width) {
+      squares[this.position].classList.add('boom')
       checkPlayerHit()
+      setTimeout(clearBoom, 1500)
     }
   }
 }
 
+//Checks squares for player & bomb. runs playerHit()
 function checkPlayerHit() {
   squares.forEach(square => {
     if(square.classList.contains('bomb') && square.classList.contains('player')) {
-      console.log('player hit, run playerHit function')
       player.playerHit()
+      square.classList.add('boom')
+      setTimeout(clearBoom, 1500)
     }
   })
 }
 
-
+// key handlers for l/r and shoot. Triggers playerMove() and moveMissile()
 function handleKeyDown(e) {
   let playerShouldMove = true
   let missileShouldFire = false
@@ -185,15 +192,23 @@ function handleKeyDown(e) {
 
 
 // CHECK HIT ON ALIEN ----------------------------------------------------------
+// checks square classes for alien & missile, clears both (buggy)
 function checkHit() {
   squares.forEach(square => {
     if(square.classList.contains('missile') && square.classList.contains('alien')) {
-      console.log('hit')
       square.classList.remove('alien', 'missile')
+      square.classList.add('boom')
       const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
       deadAliens.alienhit = true
       updateScoreBoard()
-
+      setTimeout(clearBoom, 1500)
+    }
+  })
+}
+function clearBoom() {
+  squares.forEach(square => {
+    if(square.classList.contains('boom')) {
+      square.classList.remove('boom')
     }
   })
 }
@@ -204,20 +219,49 @@ function updateScoreBoard() {
   console.log(`updateScoreBoard with new score of ${currentScore}`)
   score.innerHTML = currentScore
   if (currentScore > 500) {
+    score.style.color = 'orange'
+  }
+  if (currentScore > 1000) {
+    score.style.color = 'yellow'
+  }
+  if (currentScore > 2500) {
     score.style.color = 'blue'
   }
+  if (currentScore > 5000) {
+    score.style.color = 'green'
+  }
+  if (currentScore === 6500) {
+    setTimeout(youWin, 500)
+    clearInterval(enemyMovementTimer)
+    clearInterval(enemyShootTimer)
+  }
 }
-
-// if playerHit
-// add class 'flashing' for 3 seconds
-// push innerHTML to scoreboard
-
+function youWin() {
+  alert('You win! Congratulations, now go outside and get some sun')
+}
 
 // INIT---------------------------------------------------------------------INIT
 function init() {
+  // QUERY SELECTORS ---------------------------------------------------------
+  livesleft = document.querySelector('#player-lives')
+  score = document.querySelector('#score')
+  const reset = document.querySelector('#resetBtn')
+  const start = document.querySelector('#startBtn')
+  const pause = document.querySelector('#pauseBtn')
+
+  reset.addEventListener('click', () => {
+    location.reload()
+  })
+
+  // EVENT LISTENERS
+  window.addEventListener('keydown', handleKeyDown)
+  start.addEventListener('click', play)
+  start.addEventListener('mouseout', levelUp)
+  pause.addEventListener('click', pauseGame)
   // GRID INITIALISATION: for loop to fill grid with squares
   // GRID - 8 LINES
   const grid = document.querySelector('.grid')
+
   for (let i = 0; i < width*width; i++) {
     const square = document.createElement('div')
     square.classList.add('grid-item')
@@ -246,21 +290,8 @@ function init() {
   player = new Player(width*width-width, false, true, 3, false)
   // console.log(player)
 
-  // QUERY SELECTORS ---------------------------------------------------------
-  livesleft = document.querySelector('#player-lives')
-  score = document.querySelector('#score')
-  const start = document.querySelector('#startBtn')
-  const pause = document.querySelector('#pauseBtn')
-  // EVENT LISTENERS
-  window.addEventListener('keydown', handleKeyDown)
-  start.addEventListener('click', play)
-  start.addEventListener('mouseout', levelUp)
-  pause.addEventListener('click', pauseGame)
 
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
-  let enemyMovementTimer = null
-  let enemyShootTimer = null
-
   function play() {
     enemyMovementTimer = setInterval(alienMove, 500)
     if (aliens.position > width*width-width){
@@ -280,6 +311,7 @@ function init() {
   // PAUSE BUTTON - doesn't fucking work!
   function pauseGame() {
     console.log('pause button')
+    start.innerHTML = 'Resume'
     clearInterval(enemyMovementTimer)
     clearInterval(enemyShootTimer)
   }

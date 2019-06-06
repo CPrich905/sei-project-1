@@ -2,23 +2,21 @@
   box-sizing: border-box;
 }
 
-
 main {
   height: 60%;
   width: 100vw;
-
 }
 header {
-  height: 200px;
-  width: 100%;
-  background-image: url('../images/banner.jpg');
+  height: 150px;
+  width: 100vw;
+  background-image: url('../images/banner.gif');
   background-repeat: no-repeat;
   background-size: contain;
-  background-color: green;
   background-position: center;
 }
 
 body {
+  background-image: url('../images/background-space.jpeg');
   /* background-color: lightgreen; */
   display: flex;
   align-items: center;
@@ -27,30 +25,41 @@ body {
 }
 
 div.flex-container{
-    background-image: url('../images/background-space.jpeg');
+
 }
 
-/* left hand side of screen */
+button {
+  padding: 5px;
+  border-radius: 10px;
+  border: 2px solid #e607f2;
+}
 
 div.other-screen {
   color: white;
   flex: 40%;
-  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
   justify-content: center;
   align-items: center;
   text-align: center;
   font-family: 'Orbitron', sans-serif;
   font-size: 40px;
 }
-p {
+
+h3 {
   color: #8800cc;
+}
+
+div.instructions {
+  font-size: 15px;
+
 }
 
 #player-lives {
   color: green;
 }
 
-
+#score {
+  color: red;
+}
 
 div.scoreboard {
   justify-content: center;
@@ -63,8 +72,6 @@ div.lives {
 /* Play screen CSS */
 
 div.play-screen {
-  /* background-color: grey; */
-  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
   flex: 60%;
 }
 
@@ -109,7 +116,12 @@ div.grid-item.bomb {
   background-size: contain;
   background-position: center;
 }
-
+div.grid-item.boom {
+  background-image: url('../images/boom.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
 
 div.flex-container {
   display: flex;
@@ -117,6 +129,6 @@ div.flex-container {
 
 footer {
   height: 20%;
-  width: 100%;
-  background-color: pink;
+  width: 100vw;
+  background-color: ;
 }
