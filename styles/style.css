@@ -33,7 +33,7 @@ div.flex-container{
 div.other-screen {
   color: white;
   flex: 40%;
-  /* background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5)); */
+  background: linear-gradient(to top, rgba(0, 0, 255, 0.4), rgba(0,0,0,.5));
 }
 
 
