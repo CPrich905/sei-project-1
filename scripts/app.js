@@ -190,6 +190,7 @@ function checkHit() {
       const deadAliens = aliens.find(alien => alien.rank === parseInt(square.id))
       deadAliens.alienhit = true
       updateScoreBoard()
+
     }
   })
 }
@@ -199,6 +200,9 @@ function updateScoreBoard() {
   currentScore += 500
   console.log(`updateScoreBoard with new score of ${currentScore}`)
   score.innerHTML = currentScore
+  if (currentScore > 500) {
+    score.style.color = 'blue'
+  }
 }
 
 // if playerHit
@@ -215,7 +219,7 @@ function init() {
     const square = document.createElement('div')
     square.classList.add('grid-item')
     squares.push(square)
-    square.innerHTML = i
+    // square.innerHTML = i
     grid.append(square)
   }
 

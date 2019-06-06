@@ -84,28 +84,30 @@ div.grid-item.player {
   background-image: url('../images/baseshipa.ico');
   background-repeat: no-repeat;
   background-size: contain;
-  background-color: green;
+  /* background-color: green; */
+  position: relative;
 }
 
 div.grid-item.alien {
-  background-color: purple;
   background-image: url('../images/saucer1a.ico');
   background-repeat: no-repeat;
   background-size: contain;
+  position: relative;
 }
 
 div.grid-item.missile {
   background-image: url('../images/missile.png');
-  background-color: red;
+  /* background-color: ; */
   background-repeat: no-repeat;
   background-size: contain;
+  background-position: center;
 }
 
 div.grid-item.bomb {
   background-image: url('../images/bomb.png');
-  background-color: yellow;
   background-repeat: no-repeat;
   background-size: contain;
+  background-position: center;
 }
 
 
