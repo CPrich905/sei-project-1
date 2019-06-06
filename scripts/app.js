@@ -258,12 +258,13 @@ function init() {
   pause.addEventListener('click', pauseGame)
 
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
+  let enemyMovementTimer = null
 
   function play() {
-    const enemyMovementTimer = setInterval(alienMove, 500)
-    setTimeout(()=> {
+    enemyMovementTimer = setInterval(alienMove, 500)
+    if (aliens.position > width*width-width){
       clearInterval(enemyMovementTimer)
-    }, 60000)
+    }
 
     const enemyShootTimer = setInterval(alienShoot, 950)
     setTimeout(() => {
@@ -276,8 +277,9 @@ function init() {
   }
 
   // PAUSE BUTTON - doesn't fucking work!
-  function pauseGame(enemyMovementTimer) {
+  function pauseGame() {
     console.log('pause button')
+    console.log(play.enemyMovementTimer)
     clearInterval(enemyMovementTimer)
   }
   // ALIEN MOVE --------------------------------------------------------------
