@@ -48,6 +48,9 @@ class Player {
     if (this.lives < 2) {
       livesleft.style.color = 'red'
     }
+    if (this.lives === 0) {
+      alert('You suck! Play again?')
+    }
     //if player lives < 3, window alert 'you lost, try again?'
   }
 }
@@ -64,7 +67,7 @@ class Missile {
   fireMissile () {
     squares[this.missileIndex].classList.add('missile')
     this.moveMissile()
-    this.missileTimer = setInterval( () => this.moveMissile(), 300)
+    this.missileTimer = setInterval( () => this.moveMissile(), 200)
   }
   moveMissile() {
     squares[this.missileIndex].classList.remove('missile')
