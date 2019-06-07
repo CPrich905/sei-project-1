@@ -1,0 +1,20 @@
+//function for revealing the class
+
+function checkWin() {
+  if (hint[] = red, red, red, red) {
+    console.log('win condition met')
+    whateveryoucallyoursolutionsquares.classList.remove('CSS cover class')
+    window.alert('you win')
+  } else {
+    console.log('win condition not met')
+  }
+}
+
+if (this.lives < 3) {
+  livesleft.style.color = 'orange'
+}
+if (this.lives < 2) {
+  livesleft.style.color = 'red'
+}
+
+this.fallTimer = setInterval( () => this.bombDrops(), 300)

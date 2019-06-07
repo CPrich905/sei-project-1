@@ -1,12 +1,12 @@
 const width = 20
 const squares = []
-let player = null
 const aliens = []
 const bombs = []
+const missiles = []
+let player = null
 let movingRight = true
 let alienCount = 0 // counts movement across grid width
 let livesleft = null
-const missiles = []
 let currentScore = 0
 let score = null
 let enemyMovementTimer = null
@@ -14,14 +14,14 @@ let enemyShootTimer = null
 
 
 
-// PLAYER CONSTRUCTION ---------------------------------------------------------
+// PLAYER CONSTRUCTION -----------------------------------------------------
 class Player {
   constructor(startingIndex) {
     this.playerIndex = startingIndex
     this.lives = 3
     this.hit = false
   }
-  //PLAYER MOVEMENT
+  //Moves player icon left/right on arrow keys.
   movePlayer() {
     this.startingIndex = Math.floor(width * width - width)
     squares.forEach(square => square.classList.remove('player'))
@@ -29,13 +29,6 @@ class Player {
   }
   //confirms player is hit - reduces life counter by 1
   playerHit() {
-    // console.log('playerHit function')
-    squares.forEach(square => {
-      if(square.classList.contains('bomb') && square.classList.contains('player')) {
-        console.log(square)
-        // console.log(`player has ${this.lives} lives left`)
-      }
-    })
     player.lives -= 1
     console.log(`player has ${this.lives} lives left`)
     livesleft.innerHTML = this.lives
@@ -48,7 +41,6 @@ class Player {
     if (this.lives === 0) {
       setTimeout(youLose, 500)
     }
-    //if player lives < 3, window alert 'you lost, try again?'
   }
 }
 
@@ -57,7 +49,7 @@ function youLose() {
 }
 
 
-//MISSILE CONSTRUCTION - nice to have: put an ammo counter on this & limit number of fires
+//MISSILE CONSTRUCTION - nice to have: put an ammo counter on this & limit number of fires/fire rate
 // missile doesn't clear correctly on hit - continues through to second rank
 class Missile {
   constructor(missileIndex, shouldTrack) {
@@ -82,7 +74,7 @@ class Missile {
   }
 }
 
-//ALIEN CONSTRUCTION -----------------------------------------------------------
+//ALIEN CONSTRUCTION -----------------------------------------------------
 
 class Alien {
   constructor(rank, startingIndex, position, alienhit, alienShouldFire, alienCount) {
@@ -96,7 +88,6 @@ class Alien {
   }
   moveEnemy() {
     squares[this.position].classList.remove('alien')
-    // squares[this.position].removeAttribute('id')
     if (movingRight) {
       this.position ++
       this.alienCount ++
@@ -119,7 +110,7 @@ class Alien {
   }
 }
 
-// BOMB LOGIC ----------------------------------------------------------------
+// BOMB LOGIC --------------------------------------------------------------
 
 
 class Bombs {
@@ -127,17 +118,18 @@ class Bombs {
     this.position = position
     this.bombsAway()
   }
+  // Bomb appears in row below alien. Adjust to have bomb appear beneath bottom row if bomb dropped from middle/top row.
   bombsAway() {
     squares[this.position].classList.add('bomb')
     this.bombDrops()
     this.fallTimer = setInterval( () => this.bombDrops(), 300)
   }
+  // controls bomb movement. Reduce interval on timer in bombsAway() for + difficulty
   bombDrops() {
     squares[this.position].classList.remove('bomb')
     this.position += width
     if (this.position > width*width) {
       clearInterval(this.fallTimer)
-      // squares[this.position].classList.remove('bomb')
     } else {
       if (squares[this.position]) {
         squares[this.position].classList.add('bomb')
@@ -191,8 +183,9 @@ function handleKeyDown(e) {
 }
 
 
-// CHECK HIT ON ALIEN ----------------------------------------------------------
-// checks square classes for alien & missile, clears both (buggy)
+// CHECK HIT ON ALIEN ------------------------------------------------------
+// checks square classes for alien & missile, clears both
+// BUG!! - missile goes through and hits next alien as well - clear missile movement timer?
 function checkHit() {
   squares.forEach(square => {
     if(square.classList.contains('missile') && square.classList.contains('alien')) {
@@ -213,7 +206,7 @@ function clearBoom() {
   })
 }
 
-// SCORE BOARD -----------------------------------------------------------------
+// SCORE BOARD -------------------------------------------------------------
 function updateScoreBoard() {
   currentScore += 500
   console.log(`updateScoreBoard with new score of ${currentScore}`)
@@ -240,9 +233,9 @@ function youWin() {
   alert('You win! Congratulations, now go outside and get some sun')
 }
 
-// INIT---------------------------------------------------------------------INIT
+// INIT-----------------------------------------------------------------INIT
 function init() {
-  // QUERY SELECTORS ---------------------------------------------------------
+  // QUERY SELECTORS --------------------------------------------------------
   livesleft = document.querySelector('#player-lives')
   score = document.querySelector('#score')
   const reset = document.querySelector('#resetBtn')
@@ -258,15 +251,16 @@ function init() {
   start.addEventListener('click', play)
   start.addEventListener('mouseout', levelUp)
   pause.addEventListener('click', pauseGame)
+
   // GRID INITIALISATION: for loop to fill grid with squares
-  // GRID - 8 LINES
+  // 8 LINES
   const grid = document.querySelector('.grid')
 
   for (let i = 0; i < width*width; i++) {
     const square = document.createElement('div')
     square.classList.add('grid-item')
     squares.push(square)
-    // square.innerHTML = i
+    // square.innerHTML = i // numbers squares
     grid.append(square)
   }
 
@@ -285,10 +279,8 @@ function init() {
   aliens.push(new Alien(10, width*2+3, null, true, false, 0))
   aliens.push(new Alien(11, width*2+5, null, true, false, 0))
   aliens.push(new Alien(12, width*2+7, null, true, false, 0))
-  // console.log(aliens)
 
   player = new Player(width*width-width, false, true, 3, false)
-  // console.log(player)
 
 
   // ALIEN MOVEMENT & FIRE TIMER--------------------------------------------
@@ -301,14 +293,14 @@ function init() {
     enemyShootTimer = setInterval(alienShoot, 950)
     setTimeout(() => {
       clearInterval(enemyShootTimer)
-    }, 60000)
+    }, 120000)
   }
 
   function levelUp() {
     start.innerHTML = 'Level Up!'
   }
 
-  // PAUSE BUTTON - doesn't fucking work!
+  // PAUSE BUTTON ----------------------------------------------------------
   function pauseGame() {
     console.log('pause button')
     start.innerHTML = 'Resume'
@@ -316,20 +308,16 @@ function init() {
     clearInterval(enemyShootTimer)
   }
   // ALIEN MOVE --------------------------------------------------------------
-  // moving this & timer into the Class could stop the movement bug. Will need to bind alienMove, alienhit and moveEnemy functions where timer is called on alienShoot(). Alternatively move alienShoot as well and include all functions in Aliens Class https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
+  // moving this & timer into the Class should stop the movement bug. Will need to bind alienMove, alienhit and moveEnemy functions where timer is called on alienShoot(). Alternatively move alienShoot as well and include all functions in Aliens Class https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind
   function alienMove() {
     if (movingRight) {
-      // console.log('move right')
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.moveEnemy()
-        // console.log('count is', alienCount)
       })
       alienCount ++
     } else if (!movingRight) {
-      // console.log('moving left')
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.moveEnemy()
-        // console.log('count is', alienCount)
       })
       alienCount --
     }
@@ -337,21 +325,17 @@ function init() {
     if (alienCount === 11) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
-        // alien.position += width+1
-        // movingRight = !movingRight
       })
     } else if (alienCount === 0) {
       aliens.forEach(alien => {
         if (!alien.alienhit) alien.dropLine()
-        // alien.position += width-1
-        // movingRight = !movingRight
       })
     }
   }
 
-  //ALIEN FIRE ALLOCATION ----------------------------------------------------
+  //ALIEN FIRE ALLOCATION -------------------------------------------------
+  //slects a random alien and calls kaboom(bomb drop) function
   function alienShoot() {
-    //slects a random alien and calls kaboom(bomb drop) function
     if (!aliens.alienhit){
       aliens[Math.floor(Math.random()*aliens.length)].kaboom()
     }
