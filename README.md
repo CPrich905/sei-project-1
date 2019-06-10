@@ -25,11 +25,11 @@ Restart: Reset Button
 ### Game Instructions
 
 This is a single screen game, with the user arriving at the site to see the introduction, Start, Stop and Reset buttons, and the scoreboard.
-[image:2D6A570B-16C5-4F54-A970-740C2816063D-44910-00016C22C5AE2151/236ABF32-D6C6-48EC-B3D6-692E18B7A5B5.png]
+
 
 Pressing Start will initiate the aliens and their firing logic, using the arrows will cause the player’s token to appear. It will also cause the text within the Start button to change to ‘Level Up!’
 
-[image:25993F7B-BE4B-427E-A118-847F7B21532F-44910-00016C3F10B53193/96F7934D-5CB6-4708-9625-872209A28078.png]
+![Level up example](wu_images/SEI P1 - Code 3 - Bug.jpg)
 
 The player must then shoot down as many of the invasion force as possible - each hit earns 500 points, while each time the player is hit the life counter to the left adjusts accordingly.
 
@@ -39,7 +39,7 @@ When either all aliens have been defeated or the player is out of lives, an aler
 I began by creating my grid-layout in JavaScript, starting with a simple 10x10 grid that I could expand later. Using some basic images for a single alien and the player, I started working on the movement logic. Once this was working satisfactorily, I introduced further aliens, and then missiles (fired by the player) and bombs (dropped by the aliens).
 
 Each alien is created as part of a class, pushing each alien to an array of aliens.
-[image:7C2141DF-9E55-4216-B8E8-9C4B6E907332-44910-000171AE3F202B3F/F8BB19A6-E5CE-4867-A167-AA681D305E6E.png]
+![Alien Class Code](wu_images/SEI P1 - Code 1 - Alien Class.jpg)
 The class includes the functions for movement and dropping a bomb. I was also able to adapt this for both bomb and missile construction, which push to respective arrays of  bombs or missiles.
 
 Part of this class includes a boolean for movingRight and a counter for movement, alienCount. Each alien should count the squares it has moved across the screen, moving to the line below and reversing direction when the appropriate count has been reached (grid width less the width of the alien squadron). Due to initially starting with an individual alien, then moving to class constructor, the movement remains buggy depending on the number of aliens within the squad (see Challenges).
@@ -50,7 +50,7 @@ When the fire functions run, they initiate a ‘checkPlayerHit’  or ‘checkHi
 
 The bomb and missile classes are added to the screen in relation to a randomly selected alien:
 
-[image:ECDC24D7-92DD-45EC-89E1-5BF34DBCC5D1-44910-0001723C00E187AF/258BDAC4-6E94-4B44-9224-E2EF8B3F7BD3.png]
+![Bomb Logic Code](wu_images/SEI P1 - Code 1 - Bomb Logic.jpg)
 
 However progressing further in the game shows an additional bug: dead aliens are still included in the potential shooters array, despite including a condition to remove them (!aliens.alienhit). This is related to the issue with movement - see Challenges.
 
