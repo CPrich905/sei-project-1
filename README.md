@@ -90,9 +90,12 @@ My temporary fix was to change the text within the start button to â€˜Level Up!â
 ## Wins
 A huge win for me was building the game from scratch, pushing the limits of everything I had learned so far. My familiarity with class constructors, scope, and timers has improved significantly throughout this project.
 
-Having reached a minimum viable product by end of day 5 allowed me to spend the majority of day 6 on styling and user experience. Having struggled getting to grips with CSS earlier in the course, I intentionally kept the styling comparatively simple. My main aim was to stay true to the original concept: simple layouts with classic arcade-style fonts and bright colours.
+Having reached a minimum viable product by end of day 5 allowed me to spend the majority of day 6 on styling and user experience. Having struggled getting to grips with CSS earlier in the course, I intentionally kept the styling simple. My main aim was to stay true to the original with classic arcade-style fonts and bright colours.
 
 I was also much more content with manipulating my code towards the end of the project,  and was particularly happy with the speed and comfortability with which I created my scoreboard which I believe shows marked progression from my first few lines of code.
+
+## Key Learnings
+This project focused on simple JavaScript and ended with me feeling much more familiar with core concepts, in particular timers and "if else" statements.
 
 ## Future Features
 The priority task would be to fix the above mentioned bugs. Beyond that, I would like to add in a leaderboard using local storage and sound effects for firing.
