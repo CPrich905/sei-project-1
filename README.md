@@ -26,11 +26,11 @@ Restart: Reset Button
 
 This is a single screen game, with the user arriving at the site to see the introduction, Start, Stop and Reset buttons, and the scoreboard.
 
-![](./wu_images/SEIP1-WelcomeScreen.jpg?raw=true "Title" | width=200)
+![Alt text](./wu_images/welcome-screen.jpg?raw=true "Title")
 
 Pressing Start will initiate the aliens and their firing logic, using the arrows will cause the player’s token to appear. It will also cause the text within the Start button to change to ‘Level Up!’
 
-![Alt text](./wu_images/SEI P1 - Playing.jpg)
+![Alt text](./wu_images/playscreen.jpg?raw=true "Title")
 
 The player must then shoot down as many of the invasion force as possible - each hit earns 500 points, while each time the player is hit the life counter to the left adjusts accordingly.
 
@@ -41,7 +41,7 @@ I began by creating my grid-layout in JavaScript, starting with a simple 10x10 g
 
 Each alien is created as part of a class, pushing each alien to an array of aliens.
 
-![Alt text](sei-project-1/wu_images/SEI P1 - Code 1 - Alien Class.jpg?raw=true "Title")
+![Alt text](./wu_images/alien-class.jpg?raw=true "Title")
 
 The class includes the functions for movement and dropping a bomb. I was also able to adapt this for both bomb and missile construction, which push to respective arrays of  bombs or missiles.
 
@@ -51,7 +51,7 @@ When the fire functions run, they initiate a ‘checkPlayerHit’  or ‘checkHi
 
 The bomb and missile classes are added to the screen in relation to a randomly selected alien:
 
-![Alt text](sei-project-1/wu_images/SEI P1 - Code 1 - Bomb Logic.jpg?raw=true "Title")
+![Alt text](./wu_images/bomb-logic.jpg?raw=true "Title")
 
 However progressing further in the game shows an additional bug: dead aliens are still included in the potential shooters array, despite including a condition to remove them (!aliens.alienhit). This is related to the issue with movement - see Challenges.
 
@@ -85,7 +85,7 @@ Aliens speed and fire rate increases with each subsequent click of the start but
 ### 2 - proposed solution
 My temporary fix was to change the text within the start button to ‘Level Up!’ incorporating the glitch as a feature I was planning to include for future development. I believe this issue of multiple timer-starts will be solved by including the movement and fire timers into the class construction however ran out of time before I could confirm this was true.
 
-![Alt text](sei-project-1/wu_images/SEI P1 - Code 3 - Bug.jpg?raw=true "Title")
+![Alt text](./wu_images/bug-in-play.jpg?raw=true "Title")
 
 ## Wins
 A huge win for me was building the game from scratch, pushing the limits of everything I had learned so far. My familiarity with class constructors, scope, and timers has improved significantly throughout this project.
