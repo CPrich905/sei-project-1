@@ -26,7 +26,7 @@ Restart: Reset Button
 
 This is a single screen game, with the user arriving at the site to see the introduction, Start, Stop and Reset buttons, and the scoreboard.
 
-![Alt text](./wu_images/SEI P1 - Welcome Screen.jpg?raw=true "Title")
+![Alt text](./wu_images/SEIP1-Welcome Screen.jpg?raw=true "Title")
 
 Pressing Start will initiate the aliens and their firing logic, using the arrows will cause the player’s token to appear. It will also cause the text within the Start button to change to ‘Level Up!’
 
