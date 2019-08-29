@@ -26,11 +26,11 @@ Restart: Reset Button
 
 This is a single screen game, with the user arriving at the site to see the introduction, Start, Stop and Reset buttons, and the scoreboard.
 
-![Alt text](sei-project-1/wu_images/SEI P1 - Welcome Screen.jpg)
+![Alt text](./wu_images/SEI P1 - Welcome Screen.jpg)
 
 Pressing Start will initiate the aliens and their firing logic, using the arrows will cause the player’s token to appear. It will also cause the text within the Start button to change to ‘Level Up!’
 
-![Alt text](sei-project-1/wu_images/SEI P1 - Playing.jpg)
+![Alt text](./wu_images/SEI P1 - Playing.jpg)
 
 The player must then shoot down as many of the invasion force as possible - each hit earns 500 points, while each time the player is hit the life counter to the left adjusts accordingly.
 
