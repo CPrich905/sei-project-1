@@ -26,11 +26,11 @@ Restart: Reset Button
 
 This is a single screen game, with the user arriving at the site to see the introduction, Start, Stop and Reset buttons, and the scoreboard.
 
-![Welcome screen] (wu_images/)
+![Welcome Screen](sei-project-1/wu_images/SEI P1 - Welcome Screen.jpg)
 
 Pressing Start will initiate the aliens and their firing logic, using the arrows will cause the player’s token to appear. It will also cause the text within the Start button to change to ‘Level Up!’
 
-![Level up example](sei-project-1/wu_images/SEI P1 - Code 3 - Bug.jpg)
+![Level up example](sei-project-1/wu_images/SEI P1 - Playing.jpg)
 
 The player must then shoot down as many of the invasion force as possible - each hit earns 500 points, while each time the player is hit the life counter to the left adjusts accordingly.
 
@@ -40,18 +40,16 @@ When either all aliens have been defeated or the player is out of lives, an aler
 I began by creating my grid-layout in JavaScript, starting with a simple 10x10 grid that I could expand later. Using some basic images for a single alien and the player, I started working on the movement logic. Once this was working satisfactorily, I introduced further aliens, and then missiles (fired by the player) and bombs (dropped by the aliens).
 
 Each alien is created as part of a class, pushing each alien to an array of aliens.
-![Alien Class Code](sei-project-1/wu_images/SEI P1 - Code 1 - Alien Class.jpg)
+![Alt text](sei-project-1/wu_images/SEI P1 - Code 1 - Alien Class.jpg?raw=true "Title")
 The class includes the functions for movement and dropping a bomb. I was also able to adapt this for both bomb and missile construction, which push to respective arrays of  bombs or missiles.
 
 Part of this class includes a boolean for movingRight and a counter for movement, alienCount. Each alien should count the squares it has moved across the screen, moving to the line below and reversing direction when the appropriate count has been reached (grid width less the width of the alien squadron). Due to initially starting with an individual alien, then moving to class constructor, the movement remains buggy depending on the number of aliens within the squad (see Challenges).
-
-
 
 When the fire functions run, they initiate a ‘checkPlayerHit’  or ‘checkHit’ function to determine if the player or alien has been hit,  or if the bomb has reached the bottom row, updating the display and points counter as appropriate.
 
 The bomb and missile classes are added to the screen in relation to a randomly selected alien:
 
-![Bomb Logic Code](sei-project-1/wu_images/SEI P1 - Code 1 - Bomb Logic.jpg)
+![Alt text](sei-project-1/wu_images/SEI P1 - Code 1 - Bomb Logic.jpg?raw=true "Title")
 
 However progressing further in the game shows an additional bug: dead aliens are still included in the potential shooters array, despite including a condition to remove them (!aliens.alienhit). This is related to the issue with movement - see Challenges.
 
@@ -82,10 +80,10 @@ The player begins the game by clicking start. This begins a timer on the bomb dr
 ### 2 - symptoms
 Aliens speed and fire rate increases with each subsequent click of the start button. After this, stop will cancel out the additional timers but no longer pauses the game.
 
-[image:D7A7E159-0DAC-4334-9320-38ECE2FB1C57-44910-0001739064D98070/1CA08D6C-32B7-4B9C-96CC-20C5B5DDCB40.png]
-
 ### 2 - proposed solution
 My temporary fix was to change the text within the start button to ‘Level Up!’ incorporating the glitch as a feature I was planning to include for future development. I believe this issue of multiple timer-starts will be solved by including the movement and fire timers into the class construction however ran out of time before I could confirm this was true.
+
+![Bug in Game play](sei-project-1/wu_images/SEI P1 - Code 3 - Bug.jpg?raw=true "Title")
 
 ## Wins
 A huge win for me was building the game from scratch, pushing the limits of everything I had learned so far. My familiarity with class constructors, scope, and timers has improved significantly throughout this project.
