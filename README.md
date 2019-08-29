@@ -39,7 +39,7 @@ When either all aliens have been defeated or the player is out of lives, an aler
 I began by creating my grid-layout in JavaScript, starting with a simple 10x10 grid that I could expand later. Using some basic images for a single alien and the player, I started working on the movement logic. Once this was working satisfactorily, I introduced further aliens, and then missiles (fired by the player) and bombs (dropped by the aliens).
 
 Each alien is created as part of a class, pushing each alien to an array of aliens.
-![Alien Class Code](wu_images/SEI P1 - Code 1 - Alien Class.jpg)
+![Alien Class Code](sei-project-1/wu_images/SEI P1 - Code 1 - Alien Class.jpg)
 The class includes the functions for movement and dropping a bomb. I was also able to adapt this for both bomb and missile construction, which push to respective arrays of  bombs or missiles.
 
 Part of this class includes a boolean for movingRight and a counter for movement, alienCount. Each alien should count the squares it has moved across the screen, moving to the line below and reversing direction when the appropriate count has been reached (grid width less the width of the alien squadron). Due to initially starting with an individual alien, then moving to class constructor, the movement remains buggy depending on the number of aliens within the squad (see Challenges).
