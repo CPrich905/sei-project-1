@@ -1,5 +1,5 @@
 # sei-project-1
-# Space Invaders - GA SEI-41 P1 Write Up
+# Space Invaders
 ---
 
 ### Goal: to recreate the classic arcade game, Space Invaders.
